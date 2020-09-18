@@ -13,6 +13,8 @@ import net.minecraft.network.IPacket;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
@@ -68,7 +70,15 @@ public class SlimeballEntity extends ProjectileItemEntity implements IRendersAsI
         if (result.getType() == RayTraceResult.Type.ENTITY) {
             Entity entity = ((EntityRayTraceResult) result).getEntity();
             int i = entity instanceof SlimeEntity ? 3 : 0;
+
+            //Attack hostile mobs
             entity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float) i);
+
+            //apply Slowness potion effect
+            if(entity instanceof LivingEntity){
+                int j = 20 + ((LivingEntity) entity).getRNG().nextInt(10 * 3);
+                ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, j, 3));
+            }
         }
 
         if (!this.world.isRemote) {
