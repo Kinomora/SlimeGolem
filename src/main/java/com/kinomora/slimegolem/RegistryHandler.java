@@ -72,6 +72,5 @@ public class RegistryHandler {
         //registers the slime golem model
         RenderingRegistry.registerEntityRenderingHandler(SLIME_GOLEM, SlimeGolemRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(SLIMEBALL_ENTITY, renderManager -> new SpriteRenderer<>(renderManager, Minecraft.getInstance().getItemRenderer()));
-        //EntityType.EYE_OF_ENDER, new SpriteRenderer<>(this, itemRendererIn, 1.0F, true));
     }
 }
