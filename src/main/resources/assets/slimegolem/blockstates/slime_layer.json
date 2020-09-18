@@ -1,0 +1,28 @@
+{
+    "variants": {
+        "layers=1": {
+            "model": "slimegolem:block/slime_layer2"
+        },
+        "layers=2": {
+            "model": "slimegolem:block/slime_layer4"
+        },
+        "layers=3": {
+            "model": "slimegolem:block/slime_layer6"
+        },
+        "layers=4": {
+            "model": "slimegolem:block/slime_layer8"
+        },
+        "layers=5": {
+            "model": "slimegolem:block/slime_layer10"
+        },
+        "layers=6": {
+            "model": "slimegolem:block/slime_layer12"
+        },
+        "layers=7": {
+            "model": "slimegolem:block/slime_layer14"
+        },
+        "layers=8": {
+            "model": "slimegolem:block/slime_block"
+        }
+    }
+}

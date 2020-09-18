@@ -1,0 +1,6 @@
+1 slime layer slick like ice
+multiple layers act like normal slime block
+
+Add a carved melon texture for the slime golem
+change the 8th layer of the slime layer render to be a custom slimeblock texture without the middle bit
+figure out how to add a "9th" layer to the slime block that adds the middle bit and converts it to a slime block
