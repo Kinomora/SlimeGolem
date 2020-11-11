@@ -13,8 +13,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SlimeGolemHeadLayer extends LayerRenderer<SlimeGolemEntity, SlimeGolemModel<SlimeGolemEntity>> {
-    public SlimeGolemHeadLayer(IEntityRenderer<SlimeGolemEntity, SlimeGolemModel<SlimeGolemEntity>> p_i50922_1_) {
+public class SlimeGolemHeadLayer extends LayerRenderer<SlimeGolemEntity, SlimeGolemModel> {
+    public SlimeGolemHeadLayer(IEntityRenderer<SlimeGolemEntity, SlimeGolemModel> p_i50922_1_) {
         super(p_i50922_1_);
     }
 

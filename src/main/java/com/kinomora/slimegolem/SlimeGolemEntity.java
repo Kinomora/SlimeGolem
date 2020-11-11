@@ -13,6 +13,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -25,6 +26,7 @@ import java.util.List;
 
 public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, net.minecraftforge.common.IShearable {
     private static final DataParameter<Byte> MELON_EQUIPPED = EntityDataManager.createKey(SlimeGolemEntity.class, DataSerializers.BYTE);
+    private static final DataParameter<Boolean> ROCKY = EntityDataManager.createKey(SlimeGolemEntity.class, DataSerializers.BOOLEAN);
 
     public SlimeGolemEntity(EntityType<? extends SlimeGolemEntity> type, World worldIn) {
         super(type, worldIn);
@@ -49,11 +51,13 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, n
     protected void registerData() {
         super.registerData();
         this.dataManager.register(MELON_EQUIPPED, (byte) 16);
+        this.dataManager.register(ROCKY, false);
     }
 
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putBoolean("Melon", this.isMelonEquipped());
+        compound.putBoolean("Rocky", this.isRocky());
     }
 
     /**
@@ -63,6 +67,9 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, n
         super.readAdditional(compound);
         if (compound.contains("Melon")) {
             this.setMelonEquipped(compound.getBoolean("Melon"));
+        }
+        if(compound.contains("Rocky")){
+            this.setRocky(compound.getBoolean("Rocky"));
         }
 
     }
@@ -134,6 +141,14 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, n
 
     }
 
+    public boolean isRocky() {
+        return this.dataManager.get(ROCKY);
+    }
+
+    public void setRocky(boolean rocky) {
+        this.dataManager.set(ROCKY, rocky);
+    }
+
     @Nullable
     protected SoundEvent getAmbientSound() {
         return SoundEvents.ENTITY_SLIME_SQUISH;
@@ -162,5 +177,17 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, n
 
         this.setMelonEquipped(false);
         return drops;
+    }
+
+    @Override
+    protected boolean processInteract(PlayerEntity player, Hand hand) {
+        if (!isRocky() && player.getHeldItem(hand).getItem() == Items.COBBLESTONE) {
+            setRocky(true);
+            player.getHeldItem(hand).shrink(1);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

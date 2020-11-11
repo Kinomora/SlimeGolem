@@ -15,9 +15,7 @@ import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -106,20 +104,6 @@ public class SlimeLayerBlock extends Block {
                 }
             }
         }
-    }
-
-    @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (!worldIn.isRemote) {
-            ItemStack item = player.getHeldItem(handIn);
-
-            //checking if you're holding a slime ball
-            if (item.getItem().equals(Items.SLIME_BALL)) {
-                //and that the block you clicked on is a slime layer
-
-            }
-        }
-        return ActionResultType.PASS;
     }
 
     @Override
