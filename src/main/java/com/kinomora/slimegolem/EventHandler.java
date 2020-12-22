@@ -2,6 +2,7 @@ package com.kinomora.slimegolem;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -26,7 +27,7 @@ public class EventHandler {
                     }
 
                     //summon the entity
-                    SlimeGolemEntity entity = RegistryHandler.SLIME_GOLEM.create(event.getWorld().getWorld());
+                    SlimeGolemEntity entity = RegistryHandler.SLIME_GOLEM.create((World)event.getWorld());
                     entity.setLocationAndAngles(pos.getX()+0.5, pos.getY() - 1.5, pos.getZ()+0.5, 0f, 0f);
                     event.getWorld().addEntity(entity);
                 }

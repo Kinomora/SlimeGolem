@@ -18,10 +18,10 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -202,18 +202,17 @@ public class SlimeLayerBlock extends Block {
     public void onLanded(IBlockReader worldIn, Entity entityIn) {
         if (entityIn.isSuppressingBounce()) {
             super.onLanded(worldIn, entityIn);
-        }
-        else {
-            this.func_226946_a_(entityIn);
+        } else {
+            this.bounceEntity(entityIn);
         }
 
     }
 
-    private void func_226946_a_(Entity p_226946_1_) {
-        Vec3d vec3d = p_226946_1_.getMotion();
-        if (vec3d.y < 0.0D) {
-            double d0 = p_226946_1_ instanceof LivingEntity ? 1.0D : 0.8D;
-            p_226946_1_.setMotion(vec3d.x, -vec3d.y * d0, vec3d.z);
+    private void bounceEntity(Entity entity) {
+        Vector3d vector3d = entity.getMotion();
+        if (vector3d.y < 0.0D) {
+            double d0 = entity instanceof LivingEntity ? 1.0D : 0.8D;
+            entity.setMotion(vector3d.x, -vector3d.y * d0, vector3d.z);
         }
 
     }

@@ -2,6 +2,8 @@ package com.kinomora.slimegolem;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.GolemEntity;
@@ -12,19 +14,18 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IForgeShearable;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, net.minecraftforge.common.IShearable {
+public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, IForgeShearable {
     private static final DataParameter<Byte> MELON_EQUIPPED = EntityDataManager.createKey(SlimeGolemEntity.class, DataSerializers.BYTE);
     private static final DataParameter<Boolean> ROCKY = EntityDataManager.createKey(SlimeGolemEntity.class, DataSerializers.BOOLEAN);
 
@@ -42,10 +43,8 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, n
         }));
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double) 0.2F);
+    public static AttributeModifierMap.MutableAttribute attributes() {
+        return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 4.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
     protected void registerData() {
@@ -84,7 +83,8 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, n
             int i, j, k;
             //Slime melts in the rain
             if (this.isInWaterRainOrBubbleColumn()) {
-                this.attackEntityFrom(DamageSource.DROWN, 1.0F);
+                // Does the mob take damage from water or rain
+                //this.attackEntityFrom(DamageSource.DROWN, 1.0F);
             }
 
             if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this)) {
@@ -165,12 +165,12 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, n
     }
 
     @Override
-    public boolean isShearable(ItemStack item, net.minecraft.world.IWorldReader world, BlockPos pos) {
+    public boolean isShearable(ItemStack item, World world, BlockPos pos) {
         return this.isMelonEquipped();
     }
 
     @Override
-    public java.util.List<ItemStack> onSheared(ItemStack item, net.minecraft.world.IWorld world, BlockPos pos, int fortune) {
+    public List<ItemStack> onSheared(PlayerEntity player, ItemStack item, World world, BlockPos pos, int fortune) {
         List<ItemStack> drops = new ArrayList<>();
         ItemStack melons = new ItemStack(Items.MELON_SLICE, 3 + world.getRandom().nextInt(5));
         drops.add(melons);
@@ -180,14 +180,14 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, n
     }
 
     @Override
-    protected boolean processInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
         if (!isRocky() && player.getHeldItem(hand).getItem() == Items.COBBLESTONE) {
             setRocky(true);
             player.getHeldItem(hand).shrink(1);
-            return true;
+            return ActionResultType.CONSUME;
         }
         else {
-            return false;
+            return ActionResultType.FAIL;
         }
     }
 }

@@ -6,17 +6,15 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nullable;
 
 @OnlyIn(Dist.CLIENT)
 public class SlimeGolemRenderer extends MobRenderer<SlimeGolemEntity, SlimeGolemModel> {
@@ -34,9 +32,8 @@ public class SlimeGolemRenderer extends MobRenderer<SlimeGolemEntity, SlimeGolem
         return SLIME_GOLEM_TEXTURES;
     }
 
-    @Nullable
     @Override
-    protected RenderType func_230042_a_(SlimeGolemEntity p_230042_1_, boolean p_230042_2_, boolean p_230042_3_) {
+    protected RenderType func_230496_a_(SlimeGolemEntity p_230496_1_, boolean p_230496_2_, boolean p_230496_3_, boolean p_230496_4_) {
         return RenderType.getEntityTranslucent(SLIME_GOLEM_TEXTURES);
     }
 

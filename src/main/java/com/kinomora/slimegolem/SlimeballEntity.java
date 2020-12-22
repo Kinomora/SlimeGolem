@@ -71,7 +71,7 @@ public class SlimeballEntity extends ProjectileItemEntity{
             int i = entity instanceof SlimeEntity ? 3 : 0;
 
             //Attack hostile mobs
-            entity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float) i);
+            entity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), (float) i);
 
             //apply Slowness potion effect
             if(entity instanceof LivingEntity){

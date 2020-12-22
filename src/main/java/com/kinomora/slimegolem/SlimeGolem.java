@@ -2,9 +2,11 @@ package com.kinomora.slimegolem;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,11 +25,16 @@ public class SlimeGolem {
 
     public SlimeGolem() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
     }
 
     private void clientSetup(FMLClientSetupEvent event) {
         RenderTypeLookup.setRenderLayer(RegistryHandler.SLIME_LAYER, RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(RegistryHandler.SLIME_BLOCK, RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(RegistryHandler.CARVED_MELON_BLOCK, RenderType.getSolid());
+    }
+
+    private void setup(FMLCommonSetupEvent event) {
+        GlobalEntityTypeAttributes.put(RegistryHandler.SLIME_GOLEM, SlimeGolemEntity.attributes().create());
     }
 }
