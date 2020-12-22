@@ -2,7 +2,6 @@ package com.kinomora.slimegolem;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
@@ -25,7 +24,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 
-public class SlimeballEntity extends ProjectileItemEntity implements IRendersAsItem {
+public class SlimeballEntity extends ProjectileItemEntity{
     public SlimeballEntity(EntityType<? extends SlimeballEntity> entityType, World world) {
         super(entityType, world);
     }

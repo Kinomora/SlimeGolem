@@ -7,6 +7,8 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -67,6 +69,7 @@ public class RegistryHandler {
     }
 
     //subscribes to the register event for entities
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         //registers the slime golem model
