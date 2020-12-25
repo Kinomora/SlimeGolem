@@ -51,6 +51,6 @@ Simply place 2 slime blocks, one on top of the other, and cap it off with a melo
 [[dependencies.slimegolem]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.15.2]"
+    versionRange="[1.16.4]"
     ordering="NONE"
     side="BOTH"
