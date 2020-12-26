@@ -1,5 +1,5 @@
 ## SlimeGolem
-This is a Minecraft mod that adds Slime Golems
+This is a Minecraft Forge mod that adds Slime Golems
 
 Features:
 - Slime Golems that lay slime layers
