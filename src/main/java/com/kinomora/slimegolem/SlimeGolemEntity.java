@@ -178,6 +178,7 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
         return drops;
     }
 
+    //This lets you add cobblestone to a slime golem to make it rocky
     @Override
     public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
         if (!isRocky() && player.getHeldItem(hand).getItem() == Items.COBBLESTONE) {
