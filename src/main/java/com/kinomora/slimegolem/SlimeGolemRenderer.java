@@ -34,7 +34,7 @@ public class SlimeGolemRenderer extends MobRenderer<SlimeGolemEntity, SlimeGolem
 
     @Override
     protected RenderType func_230496_a_(SlimeGolemEntity p_230496_1_, boolean p_230496_2_, boolean p_230496_3_, boolean p_230496_4_) {
-        return RenderType.getEntityTranslucent(SLIME_GOLEM_TEXTURES);
+        return RenderType.getEntityTranslucent(getEntityTexture(p_230496_1_));
     }
 
     @Override

@@ -67,7 +67,7 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
         if (compound.contains("Melon")) {
             this.setMelonEquipped(compound.getBoolean("Melon"));
         }
-        if(compound.contains("Rocky")){
+        if (compound.contains("Rocky")) {
             this.setRocky(compound.getBoolean("Rocky"));
         }
 
@@ -134,8 +134,7 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
         byte b0 = this.dataManager.get(MELON_EQUIPPED);
         if (melonEquipped) {
             this.dataManager.set(MELON_EQUIPPED, (byte) (b0 | 16));
-        }
-        else {
+        } else {
             this.dataManager.set(MELON_EQUIPPED, (byte) (b0 & -17));
         }
 
@@ -185,8 +184,7 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
             setRocky(true);
             player.getHeldItem(hand).shrink(1);
             return ActionResultType.CONSUME;
-        }
-        else {
+        } else {
             return ActionResultType.FAIL;
         }
     }

@@ -3,7 +3,6 @@ package com.kinomora.slimegolem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -68,10 +67,16 @@ public class SlimeballEntity extends ProjectileItemEntity{
     protected void onImpact(RayTraceResult result) {
         if (result.getType() == RayTraceResult.Type.ENTITY) {
             Entity entity = ((EntityRayTraceResult) result).getEntity();
-            int i = entity instanceof SlimeEntity ? 3 : 0;
+
+            //Set damage based on if the golem is rocky or not
+            float damage = 0;
+            Entity shooter = this.func_234616_v_();
+            if(shooter instanceof SlimeGolemEntity && ((SlimeGolemEntity) shooter).isRocky()){
+                damage = 3;
+            }
 
             //Attack hostile mobs
-            entity.attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), (float) i);
+            entity.attackEntityFrom(DamageSource.causeThrownDamage(this, shooter), damage);
 
             //apply Slowness potion effect
             if(entity instanceof LivingEntity){
