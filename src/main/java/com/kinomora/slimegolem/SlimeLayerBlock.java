@@ -39,7 +39,7 @@ public class SlimeLayerBlock extends Block {
 
     public SlimeLayerBlock() {
         //set the slime layer properties
-        //materials match slime blocks (clay, grass, etc)
+        //materials match slime blocks (misc, grass, etc)
         super(Properties.create(Material.MISCELLANEOUS, MaterialColor.GRASS).slipperiness(0.8f).sound(SoundType.SLIME).notSolid());
         this.setDefaultState(this.stateContainer.getBaseState().with(LAYERS, Integer.valueOf(1)));
     }
