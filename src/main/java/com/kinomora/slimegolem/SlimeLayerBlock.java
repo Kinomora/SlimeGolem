@@ -31,7 +31,7 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = SlimeGolem.ID)
+@Mod.EventBusSubscriber(modid = SlimeGolems.ID)
 public class SlimeLayerBlock extends Block {
 
     public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS_1_8;

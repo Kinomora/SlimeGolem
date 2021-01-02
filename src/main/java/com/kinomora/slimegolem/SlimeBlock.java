@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod;
 
 
-@Mod.EventBusSubscriber(modid = SlimeGolem.ID)
+@Mod.EventBusSubscriber(modid = SlimeGolems.ID)
 public class SlimeBlock extends BreakableBlock {
 
     public SlimeBlock() {

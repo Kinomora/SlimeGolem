@@ -16,25 +16,21 @@ license="GNU Affero General Public License"
 # The modid of the mod
 modId="slimegolem" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-version="${file.jarVersion}" #mandatory
+version="1.16.4_04" #mandatory
  # A display name for the mod
-displayName="Slime Golem" #mandatory
+displayName="Slime Golems" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
 #updateJSONURL="http://myurl.me/" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
-displayURL="http://kinomora.com/" #optional
+displayURL="https://github.com/Kinomora/SlimeGolem/issues" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="examplemod.png" #optional
+logoFile="SlimeGolemIcon.png" #optional
 # A text field displayed in the mod UI
 credits="Much love to Quarris and Vazkii's discord for helping me with most of the code and my inability to know basic Java" #optional
 # A text field displayed in the mod UI
 authors="Kino, Quarris" #optional
 # The description text for the mod (multi line!) (#mandatory)
-description='''
-Slime Golem is a simple mod that adds an entity similar to a Snowman except made out of slime blocks and a melon.
-
-Simply place 2 slime blocks, one on top of the other, and cap it off with a melon.
-'''
+description='''Slime Golems add entities similar to a Snowman except made out of Slime Blocks with a variety of uses.'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.slimegolem]] #optional
     # the modid of the dependency

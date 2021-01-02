@@ -4,6 +4,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -12,8 +14,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(SlimeGolem.ID)
-public class SlimeGolem {
+@Mod(SlimeGolems.ID)
+public class SlimeGolems {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -23,9 +25,13 @@ public class SlimeGolem {
         return new ResourceLocation(ID, name);
     }
 
-    public SlimeGolem() {
+    public SlimeGolems() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+
+        ForgeConfigSpec.Builder  configBuilder = new ForgeConfigSpec.Builder();
+        ModConfig.init(configBuilder);
+        ModLoadingContext.get().registerConfig(net.minecraftforge.fml.config.ModConfig.Type.COMMON, configBuilder.build());
     }
 
     private void clientSetup(FMLClientSetupEvent event) {

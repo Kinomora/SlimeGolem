@@ -12,8 +12,8 @@ public class SlimeGolemModel extends SegmentedModel<SlimeGolemEntity> {
     private final ModelRenderer head;
     private final ModelRenderer bodyMiddle;
     private final ModelRenderer bottomBody;
-    private final ModelRenderer rightHand;
-    private final ModelRenderer leftHand;
+    private final ModelRenderer rightArm;
+    private final ModelRenderer leftArm;
     private final ModelRenderer rockyHeadInner;
     private final ModelRenderer rockyBodyMiddleInner;
     private final ModelRenderer rockyBodyBottomInner;
@@ -49,14 +49,15 @@ public class SlimeGolemModel extends SegmentedModel<SlimeGolemEntity> {
         this.rockyBodyBottomInner.addBox(-5.0F, -11.0F, -5.0F, 10.0F, 10.0F, 10.0F, -0.5F);
         this.rockyBodyBottomInner.setRotationPoint(0.0F, 24.0F, 0.0F);
 
-        //Right Arm
-        this.rightHand = (new ModelRenderer(this, 32, 0)).setTextureSize(64, 128);
-        this.rightHand.addBox(-1.0F, 0.05F, -1.0F, 12.0F, 2.0F, 2.0F, -0.5F);
-        this.rightHand.setRotationPoint(0.0F, 6.0F, 0.0F);
+
+        //Right arm
+        this.rightArm = (new ModelRenderer(this, 32, 0)).setTextureSize(64, 128);
+        this.rightArm.addBox(-1.0F, 0.05F, -1.0F, 12.0F, 2.0F, 2.0F, -0.5F);
+        this.rightArm.setRotationPoint(0.0F, 6.0F, 0.0F);
         //Left arm
-        this.leftHand = (new ModelRenderer(this, 32, 0)).setTextureSize(64, 128);
-        this.leftHand.addBox(-1.0F, 0.05F, -1.0F, 12.0F, 2.0F, 2.0F, -0.5F);
-        this.leftHand.setRotationPoint(0.0F, 6.0F, 0.0F);
+        this.leftArm = (new ModelRenderer(this, 32, 0)).setTextureSize(64, 128);
+        this.leftArm.addBox(-1.0F, 0.05F, -1.0F, 12.0F, 2.0F, 2.0F, -0.5F);
+        this.leftArm.setRotationPoint(0.0F, 6.0F, 0.0F);
     }
 
     @Override
@@ -71,29 +72,32 @@ public class SlimeGolemModel extends SegmentedModel<SlimeGolemEntity> {
      * Sets this entity's model rotation angles
      */
     public void setRotationAngles(SlimeGolemEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        //normal
+        //normal handling
         this.head.rotateAngleY = netHeadYaw * ((float)Math.PI / 180F);
         this.head.rotateAngleX = headPitch * ((float)Math.PI / 180F);
         this.bodyMiddle.rotateAngleY = netHeadYaw * ((float)Math.PI / 180F) * 0.25F;
         float normalSIN = MathHelper.sin(this.bodyMiddle.rotateAngleY);
         float normalCOS = MathHelper.cos(this.bodyMiddle.rotateAngleY);
-        //rockyInner
+
+        //rockyInner handling
         this.rockyHeadInner.rotateAngleY = netHeadYaw * ((float)Math.PI / 180F);
         this.rockyHeadInner.rotateAngleX = headPitch * ((float)Math.PI / 180F);
         this.rockyBodyMiddleInner.rotateAngleY = netHeadYaw * ((float)Math.PI / 180F) * 0.25F;
 
-        this.rightHand.rotateAngleZ = 1.0F;
-        this.leftHand.rotateAngleZ = -1.0F;
-        this.rightHand.rotateAngleY = 0.0F + this.bodyMiddle.rotateAngleY;
-        this.leftHand.rotateAngleY = (float)Math.PI + this.bodyMiddle.rotateAngleY;
-        this.rightHand.rotationPointX = normalCOS * 5.0F;
-        this.rightHand.rotationPointZ = -normalSIN * 5.0F;
-        this.leftHand.rotationPointX = -normalCOS * 5.0F;
-        this.leftHand.rotationPointZ = normalSIN * 5.0F;
+
+        //Arm handling
+        this.rightArm.rotateAngleZ = 1.0F;
+        this.leftArm.rotateAngleZ = -1.0F;
+        this.rightArm.rotateAngleY = 0.0F + this.bodyMiddle.rotateAngleY;
+        this.leftArm.rotateAngleY = (float)Math.PI + this.bodyMiddle.rotateAngleY;
+        this.rightArm.rotationPointX = normalCOS * 5.0F;
+        this.rightArm.rotationPointZ = -normalSIN * 5.0F;
+        this.leftArm.rotationPointX = -normalCOS * 5.0F;
+        this.leftArm.rotationPointZ = normalSIN * 5.0F;
     }
 
     public Iterable<ModelRenderer> getParts() {
-        return ImmutableList.of(this.bodyMiddle, this.bottomBody, this.head, this.rightHand, this.leftHand, this.rockyBodyBottomInner, this.rockyBodyMiddleInner, this.rockyHeadInner);
+        return ImmutableList.of(this.bodyMiddle, this.bottomBody, this.head, this.rightArm, this.leftArm, this.rockyBodyBottomInner, this.rockyBodyMiddleInner, this.rockyHeadInner);
     }
 
     public ModelRenderer func_205070_a() {

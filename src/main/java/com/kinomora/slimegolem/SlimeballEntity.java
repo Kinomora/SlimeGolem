@@ -71,7 +71,7 @@ public class SlimeballEntity extends ProjectileItemEntity{
             //Set damage based on if the golem is rocky or not
             float damage = 0;
             Entity shooter = this.func_234616_v_();
-            if(shooter instanceof SlimeGolemEntity && ((SlimeGolemEntity) shooter).isRocky()){
+            if(shooter instanceof SlimeGolemEntity && ((SlimeGolemEntity) shooter).isRocky() && ModConfig.get().enableRockyGolem.get()){
                 damage = 3;
             }
 

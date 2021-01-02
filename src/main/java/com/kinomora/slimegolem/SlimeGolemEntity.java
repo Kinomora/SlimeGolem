@@ -28,6 +28,7 @@ import java.util.List;
 public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, IForgeShearable {
     private static final DataParameter<Byte> MELON_EQUIPPED = EntityDataManager.createKey(SlimeGolemEntity.class, DataSerializers.BYTE);
     private static final DataParameter<Boolean> ROCKY = EntityDataManager.createKey(SlimeGolemEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IRONY = EntityDataManager.createKey(SlimeGolemEntity.class, DataSerializers.BOOLEAN);
 
     public SlimeGolemEntity(EntityType<? extends SlimeGolemEntity> type, World worldIn) {
         super(type, worldIn);
@@ -51,12 +52,14 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
         super.registerData();
         this.dataManager.register(MELON_EQUIPPED, (byte) 16);
         this.dataManager.register(ROCKY, false);
+        this.dataManager.register(IRONY, false);
     }
 
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putBoolean("Melon", this.isMelonEquipped());
         compound.putBoolean("Rocky", this.isRocky());
+        //compound.putBoolean("Irony", this.isIrony());
     }
 
     /**
@@ -148,6 +151,14 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
         this.dataManager.set(ROCKY, rocky);
     }
 
+    /*public boolean isIrony() {
+        return this.dataManager.get(IRONY);
+    }
+
+    public void setIrony(boolean irony) {
+        this.dataManager.set(IRONY, irony);
+    }*/
+
     @Nullable
     protected SoundEvent getAmbientSound() {
         return SoundEvents.ENTITY_SLIME_SQUISH;
@@ -181,10 +192,19 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
     //This lets you add cobblestone to a slime golem to make it rocky
     @Override
     public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
-        if (!isRocky() && player.getHeldItem(hand).getItem() == Items.COBBLESTONE) {
+        //Setting Rocky if it's not already rocky or irony
+        if (!isRocky() && /*!isIrony() &&*/ player.getHeldItem(hand).getItem() == Items.COBBLESTONE && ModConfig.get().enableRockyGolem.get()) {
             setRocky(true);
-            player.getHeldItem(hand).shrink(1);
+            if(!player.isCreative()){
+                player.getHeldItem(hand).shrink(1);
+            }
             return ActionResultType.CONSUME;
+        /*}
+        //Setting Irony if it's not already irony or rocky
+        else if (!isRocky() && !isIrony() && player.getHeldItem(hand).getItem() == Items.IRON_INGOT && ModConfig.get().enableIronGolem.get()) {
+            setIrony(true);
+            player.getHeldItem(hand).shrink(1);
+            return ActionResultType.CONSUME;*/
         } else {
             return ActionResultType.FAIL;
         }
