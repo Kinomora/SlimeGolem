@@ -86,9 +86,8 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
         super.livingTick();
         if (!this.world.isRemote) {
             int i, j, k;
-            //Slime melts in the rain
+            //enableRainDamage; Slime melts in the rain
             if (this.isInWaterRainOrBubbleColumn() && ModConfig.get().enableRainDamage.get()) {
-                // Does the mob take damage from water or rain
                 this.attackEntityFrom(DamageSource.DROWN, 1.0F);
             }
 

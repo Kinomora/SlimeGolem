@@ -47,6 +47,6 @@ description='''Slime Golems add entities similar to a Snowman except made out of
 [[dependencies.slimegolem]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.4]"
+    versionRange="[1.16.3]"
     ordering="NONE"
     side="BOTH"
