@@ -16,9 +16,11 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IForgeShearable;
 
 import javax.annotation.Nullable;
@@ -85,13 +87,21 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
         if (!this.world.isRemote) {
             int i, j, k;
             //Slime melts in the rain
-            if (this.isInWaterRainOrBubbleColumn()) {
+            if (this.isInWaterRainOrBubbleColumn() && ModConfig.get().enableRainDamage.get()) {
                 // Does the mob take damage from water or rain
-                //this.attackEntityFrom(DamageSource.DROWN, 1.0F);
+                this.attackEntityFrom(DamageSource.DROWN, 1.0F);
             }
 
+            //Mob griefing = false; Exits the method before executing the slime layers code
             if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this)) {
                 return;
+            }
+
+            //alternateLayers = true; Slime layers can only be laid in slime chunks or swamps
+            if (ModConfig.get().alternateLayers.get()) {
+                if(!isSlimeSpawnable()){
+                    return;
+                }
             }
 
             //lay slime everywhere it walks, can change this to only slime chunks if wanted
@@ -107,7 +117,6 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
                 }
             }
         }
-
     }
 
     /**
@@ -195,7 +204,7 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
         //Setting Rocky if it's not already rocky or irony
         if (!isRocky() && /*!isIrony() &&*/ player.getHeldItem(hand).getItem() == Items.COBBLESTONE && ModConfig.get().enableRockyGolem.get()) {
             setRocky(true);
-            if(!player.isCreative()){
+            if (!player.isCreative()) {
                 player.getHeldItem(hand).shrink(1);
             }
             return ActionResultType.CONSUME;
@@ -208,5 +217,25 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
         } else {
             return ActionResultType.FAIL;
         }
+    }
+
+    private static boolean isSlimeChunk(World world, double x, double z) {
+        return isSlimeChunk(world, new BlockPos(x, 0, z));
+    }
+
+    public static boolean isSlimeChunk(World world, BlockPos pos) {
+        ChunkPos chunkpos = new ChunkPos(pos);
+        return SharedSeedRandom.seedSlimeChunk(chunkpos.x, chunkpos.z, ((ServerWorld) world).getSeed(), 987234911L).nextInt(10) == 0;
+    }
+
+    private boolean isSlimeSpawnable() {
+        if (this.world.getBiome(this.getPosition()).getRegistryName().toString().equals("minecraft:swamp") || this.world.getBiome(this.getPosition()).getRegistryName().toString().equals("minecraft:swamp_hills")) {
+            return true;
+        }
+
+        if (isSlimeChunk(this.world, this.getPosX(), this.getPosZ())) {
+            return true;
+        }
+        return false;
     }
 }
