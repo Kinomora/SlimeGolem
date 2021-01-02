@@ -11,6 +11,6 @@ Features:
 ## Releases
 [1.15.2] https://github.com/Kinomora/SlimeGolem/releases/tag/1.15.2_03 
 
-[1.16.4] https://github.com/Kinomora/SlimeGolem/releases/tag/1.16.4_03
+[1.16.4] https://github.com/Kinomora/SlimeGolem/releases/tag/1.16.4_04
 
 [CurseForge Page] https://www.curseforge.com/minecraft/mc-mods/slime-golem
