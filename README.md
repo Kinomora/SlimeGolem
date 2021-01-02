@@ -6,7 +6,7 @@ Features:
 - Slime layers drop slimeballs when broken
 - Slime layers can stack up to 8-tall, then turn into slime blocks with 1 more slimeball
 - Regular Slime Golems will throw slimeballs at hostile mobs and apply a slowness effect
-- Rocky Slime Golems's attacks also damage enemies
+- Rocky Slime Golem attacks also damage enemies
 
 ## Releases
 [1.15.2] https://github.com/Kinomora/SlimeGolem/releases/tag/1.15.2_03 
