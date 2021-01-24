@@ -1,5 +1,8 @@
-package com.kinomora.slimegolem;
+package com.kinomora.slimegolem.events;
 
+import com.kinomora.slimegolem.RegistryHandler;
+import com.kinomora.slimegolem.SlimeGolems;
+import com.kinomora.slimegolem.entities.SlimeGolemEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

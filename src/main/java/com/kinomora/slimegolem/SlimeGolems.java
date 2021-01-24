@@ -1,5 +1,8 @@
 package com.kinomora.slimegolem;
 
+import com.kinomora.slimegolem.config.ModConfig;
+import com.kinomora.slimegolem.entities.IronSlimeGolemEntity;
+import com.kinomora.slimegolem.entities.SlimeGolemEntity;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
@@ -42,5 +45,6 @@ public class SlimeGolems {
 
     private void setup(FMLCommonSetupEvent event) {
         GlobalEntityTypeAttributes.put(RegistryHandler.SLIME_GOLEM, SlimeGolemEntity.attributes().create());
+        GlobalEntityTypeAttributes.put(RegistryHandler.IRON_SLIME_GOLEM, IronSlimeGolemEntity.attributes().create());
     }
 }

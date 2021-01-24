@@ -1,5 +1,7 @@
-package com.kinomora.slimegolem;
+package com.kinomora.slimegolem.entities;
 
+import com.kinomora.slimegolem.RegistryHandler;
+import com.kinomora.slimegolem.config.ModConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -23,17 +25,17 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 
-public class SlimeballEntity extends ProjectileItemEntity{
+public class SlimeballEntity extends ProjectileItemEntity {
+    private final ImpactResult impactResult;
+
     public SlimeballEntity(EntityType<? extends SlimeballEntity> entityType, World world) {
         super(entityType, world);
+        this.impactResult = null;
     }
 
-    public SlimeballEntity(World worldIn, LivingEntity throwerIn) {
+    public SlimeballEntity(World worldIn, LivingEntity throwerIn, ImpactResult result) {
         super(RegistryHandler.SLIMEBALL_ENTITY, throwerIn, worldIn);
-    }
-
-    public SlimeballEntity(World worldIn, double x, double y, double z) {
-        super(RegistryHandler.SLIMEBALL_ENTITY, x, y, z, worldIn);
+        this.impactResult = result;
     }
 
     protected Item getDefaultItem() {
@@ -65,13 +67,17 @@ public class SlimeballEntity extends ProjectileItemEntity{
      * Called when this EntityThrowable hits a block or entity.
      */
     protected void onImpact(RayTraceResult result) {
+        //RangedSlimeGolemEntity shooter = this.getShooter();
+        //if(shooter!=null){
+            //this.impactResult.onImpact(world, this, result);
+        //}
         if (result.getType() == RayTraceResult.Type.ENTITY) {
             Entity entity = ((EntityRayTraceResult) result).getEntity();
 
             //Set damage based on if the golem is rocky or not
             float damage = 0;
             Entity shooter = this.func_234616_v_();
-            if(shooter instanceof SlimeGolemEntity && ((SlimeGolemEntity) shooter).isRocky() && ModConfig.get().enableRockyGolem.get()){
+            if (shooter instanceof SlimeGolemEntity && ((SlimeGolemEntity) shooter).isRocky() && ModConfig.get().enableRockyGolem.get()) {
                 damage = 3;
             }
 
@@ -79,16 +85,18 @@ public class SlimeballEntity extends ProjectileItemEntity{
             entity.attackEntityFrom(DamageSource.causeThrownDamage(this, shooter), damage);
 
             //apply Slowness potion effect
-            if(entity instanceof LivingEntity){
+            if (entity instanceof LivingEntity) {
                 int j = 20 + ((LivingEntity) entity).getRNG().nextInt(10 * 3);
                 ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, j, 3));
             }
         }
 
+        //Removes the projectile entity on impact
         if (!this.world.isRemote) {
             this.world.setEntityState(this, (byte) 3);
             this.remove();
         }
+
 
     }
 
@@ -96,5 +104,18 @@ public class SlimeballEntity extends ProjectileItemEntity{
     @Override
     public IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    public RangedSlimeGolemEntity getShooter(){
+        Entity shooter = this.func_234616_v_();
+        if(shooter instanceof RangedSlimeGolemEntity){
+            return (RangedSlimeGolemEntity) shooter;
+        } else {
+            return null;
+        }
+    }
+
+    public interface ImpactResult {
+        void onImpact(World world, SlimeballEntity projectile, RayTraceResult result);
     }
 }

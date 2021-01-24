@@ -1,6 +1,7 @@
-package com.kinomora.slimegolem;
+package com.kinomora.slimegolem.models;
 
 import com.google.common.collect.ImmutableList;
+import com.kinomora.slimegolem.entities.SlimeGolemEntity;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;

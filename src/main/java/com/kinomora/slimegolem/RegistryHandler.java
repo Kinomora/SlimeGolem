@@ -1,5 +1,13 @@
 package com.kinomora.slimegolem;
 
+import com.kinomora.slimegolem.blocks.CarvedMelonBlock;
+import com.kinomora.slimegolem.blocks.SlimeBlock;
+import com.kinomora.slimegolem.blocks.SlimeLayerBlock;
+import com.kinomora.slimegolem.entities.IronSlimeGolemEntity;
+import com.kinomora.slimegolem.entities.SlimeGolemEntity;
+import com.kinomora.slimegolem.entities.SlimeballEntity;
+import com.kinomora.slimegolem.render.IronSlimeGolemRenderer;
+import com.kinomora.slimegolem.render.SlimeGolemRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
@@ -34,6 +42,8 @@ public class RegistryHandler {
 
     @ObjectHolder(SlimeGolems.ID + ":slime_golem")
     public static EntityType<SlimeGolemEntity> SLIME_GOLEM;
+    @ObjectHolder(SlimeGolems.ID + ":iron_slime_golem")
+    public static EntityType<IronSlimeGolemEntity> IRON_SLIME_GOLEM;
 
     @ObjectHolder(SlimeGolems.ID + ":slimeball_entity")
     public static EntityType<SlimeballEntity> SLIMEBALL_ENTITY;
@@ -64,6 +74,9 @@ public class RegistryHandler {
         //Register the Slimegolem (snowman) entity
         reg.register(EntityType.Builder.create(SlimeGolemEntity::new, EntityClassification.MISC).size(0.7F, 1.8F).build("slime_golem").setRegistryName(SlimeGolems.createRes("slime_golem")));
 
+        //Register the Iron Slimegolem (irongolem) entity
+        reg.register(EntityType.Builder.create(IronSlimeGolemEntity::new, EntityClassification.MISC).size(1.4F, 2.7F).build("iron_slime_golem").setRegistryName(SlimeGolems.createRes("iron_slime_golem")));
+
         //Register the Slimeball (snowball) entity
         reg.register(EntityType.Builder.<SlimeballEntity>create(SlimeballEntity::new, EntityClassification.MISC).size(0.25f, 0.25f).setUpdateInterval(3).setTrackingRange(16).setShouldReceiveVelocityUpdates(true).build("slimeball_entity").setRegistryName(SlimeGolems.createRes("slimeball_entity")));
     }
@@ -74,6 +87,10 @@ public class RegistryHandler {
     public static void registerModels(ModelRegistryEvent event) {
         //registers the slime golem model
         RenderingRegistry.registerEntityRenderingHandler(SLIME_GOLEM, SlimeGolemRenderer::new);
+        //register the iron slime golem model
+        RenderingRegistry.registerEntityRenderingHandler(IRON_SLIME_GOLEM, IronSlimeGolemRenderer::new);
+
+        //register the slime
         RenderingRegistry.registerEntityRenderingHandler(SLIMEBALL_ENTITY, renderManager -> new SpriteRenderer<>(renderManager, Minecraft.getInstance().getItemRenderer()));
     }
 }

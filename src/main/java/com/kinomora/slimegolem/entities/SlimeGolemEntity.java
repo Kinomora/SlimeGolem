@@ -1,5 +1,7 @@
-package com.kinomora.slimegolem;
+package com.kinomora.slimegolem.entities;
 
+import com.kinomora.slimegolem.RegistryHandler;
+import com.kinomora.slimegolem.config.ModConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -14,10 +16,10 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -123,7 +125,26 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
      * Attack the specified entity using a ranged attack.
      */
     public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-        SlimeballEntity SlimeballEntity = new SlimeballEntity(this.world, this);
+        SlimeballEntity SlimeballEntity = new SlimeballEntity(this.world, this, (world,projectile, result) -> {
+            if (result.getType() == RayTraceResult.Type.ENTITY) {
+                Entity t = ((EntityRayTraceResult) result).getEntity();
+
+                //Set damage based on if the golem is rocky or not
+                float damage = 0;
+                if (ModConfig.get().enableRockyGolem.get()) {
+                    damage = 3;
+                }
+
+                //Attack hostile mobs
+                t.attackEntityFrom(DamageSource.causeThrownDamage(projectile, this), damage);
+
+                //apply Slowness potion effect
+                if (t instanceof LivingEntity) {
+                    int j = 20 + ((LivingEntity) t).getRNG().nextInt(10 * 3);
+                    ((LivingEntity) t).addPotionEffect(new EffectInstance(Effects.SLOWNESS, j, 3));
+                }
+            }
+        });
         double d0 = target.getPosYEye() - (double) 1.1F;
         double d1 = target.getPosX() - this.getPosX();
         double d2 = d0 - SlimeballEntity.getPosY();

@@ -1,5 +1,6 @@
-package com.kinomora.slimegolem;
+package com.kinomora.slimegolem.blocks;
 
+import com.kinomora.slimegolem.SlimeGolems;
 import net.minecraft.block.BreakableBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

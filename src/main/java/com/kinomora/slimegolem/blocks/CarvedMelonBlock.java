@@ -1,4 +1,4 @@
-package com.kinomora.slimegolem;
+package com.kinomora.slimegolem.blocks;
 
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.SoundType;
@@ -10,11 +10,5 @@ public class CarvedMelonBlock extends HorizontalBlock {
     public CarvedMelonBlock() {
         super(Properties.create(Material.GOURD, MaterialColor.LIME).hardnessAndResistance(1.0F).sound(SoundType.WOOD));
         this.setDefaultState(this.stateContainer.getBaseState());
-    }/*
-
-
-    protected CarvedMelonBlock(Block.Properties properties) {
-        super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
-    }*/
+    }
 }
