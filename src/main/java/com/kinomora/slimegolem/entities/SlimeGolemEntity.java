@@ -1,13 +1,16 @@
 package com.kinomora.slimegolem.entities;
 
+import com.kinomora.slimegolem.AI.Goals.HealAllyGoal;
 import com.kinomora.slimegolem.RegistryHandler;
 import com.kinomora.slimegolem.config.ModConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.LookRandomlyGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.passive.GolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -39,12 +42,12 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.25D, 20, 10.0F));
+        this.goalSelector.addGoal(1, new HealAllyGoal(this, 1.25D, 20, 10.0F));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D, 1.0000001E-5F));
         this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, MobEntity.class, 10, true, false, (p_213621_0_) -> {
-            return p_213621_0_ instanceof IMob;
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, MobEntity.class, 10, true, false, (testEntity) -> {
+            return testEntity instanceof IronSlimeGolemEntity;
         }));
     }
 
