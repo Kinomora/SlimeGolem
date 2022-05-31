@@ -6,6 +6,7 @@ import com.kinomora.slimegolem.block.SlimeLayerBlock;
 import com.kinomora.slimegolem.entity.SlimeGolemEntity;
 import com.kinomora.slimegolem.entity.SlimeballEntity;
 import com.kinomora.slimegolem.render.SlimeGolemRenderer;
+import com.kinomora.slimegolem.render.SlimyIronGolemRenderer;
 import com.kinomora.slimegolem.render.model.SlimeGolemModel;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.EntityType;
@@ -40,6 +41,9 @@ public class RegistryHandler {
     @ObjectHolder(SlimeGolems.ID + ":slime_golem")
     public static EntityType<SlimeGolemEntity> SLIME_GOLEM;
 
+    @ObjectHolder(SlimeGolems.ID + ":slimy_iron_golem")
+    public static EntityType<SlimeGolemEntity> SLIMY_IRON_GOLEM;
+
     @ObjectHolder(SlimeGolems.ID + ":slimeball_entity")
     public static EntityType<SlimeballEntity> SLIMEBALL_ENTITY;
 
@@ -69,6 +73,9 @@ public class RegistryHandler {
         //Register the Slimegolem (snowman) entity
         reg.register(EntityType.Builder.of(SlimeGolemEntity::new, MobCategory.MISC).sized(0.7F, 1.8F).build("slime_golem").setRegistryName(SlimeGolems.createRes("slime_golem")));
 
+        //Register the Slimy Iron Golem entity
+        reg.register(EntityType.Builder.of(SlimeGolemEntity::new, MobCategory.MISC).sized(1.4F, 2.7F).build("slimy_iron_golem").setRegistryName(SlimeGolems.createRes("slimy_iron_golem")));
+
         //Register the Slimeball (snowball) entity
         reg.register(EntityType.Builder.<SlimeballEntity>of(SlimeballEntity::new, MobCategory.MISC).sized(0.25f, 0.25f).setUpdateInterval(3).setTrackingRange(16).setShouldReceiveVelocityUpdates(true).build("slimeball_entity").setRegistryName(SlimeGolems.createRes("slimeball_entity")));
     }
@@ -79,6 +86,7 @@ public class RegistryHandler {
     public static void registerModels(EntityRenderersEvent.RegisterRenderers event) {
         //registers the slime golem model
         event.registerEntityRenderer(SLIME_GOLEM, SlimeGolemRenderer::new);
+        event.registerEntityRenderer(SLIMY_IRON_GOLEM, SlimyIronGolemRenderer::new);
         event.registerEntityRenderer(SLIMEBALL_ENTITY, ThrownItemRenderer::new);
     }
 
@@ -88,5 +96,6 @@ public class RegistryHandler {
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         //registers the slime golem layers
         event.registerLayerDefinition(SlimeGolemRenderer.MODEL_RES, SlimeGolemModel::createBodyLayer);
+        event.registerLayerDefinition(SlimyIronGolemRenderer.MODEL_RES, SlimeGolemModel::createBodyLayer);
     }
 }

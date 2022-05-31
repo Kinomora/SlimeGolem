@@ -43,5 +43,6 @@ public class SlimeGolems {
 
     private void addEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(RegistryHandler.SLIME_GOLEM, SlimeGolemEntity.attributes().build());
+        event.put(RegistryHandler.SLIMY_IRON_GOLEM, SlimeGolemEntity.attributes().build());
     }
 }
