@@ -9,8 +9,10 @@ Features:
 - Rocky Slime Golem attacks also damage enemies
 
 ## Releases
-[1.15.2] https://github.com/Kinomora/SlimeGolem/releases/tag/1.15.2_03 
+[1.15.2](https://github.com/Kinomora/SlimeGolem/releases/tag/1.15.2_03) Release: 3
 
-[1.16.5] https://github.com/Kinomora/SlimeGolem/releases/tag/1.16.5_01
+[1.16.5](https://github.com/Kinomora/SlimeGolem/releases/tag/1.16.5_FINAL) Release: Final
+
+[1.18.2](https://github.com/Kinomora/SlimeGolem/releases/tag/1.18.2) Release: DEV01
 
 [CurseForge Page] https://www.curseforge.com/minecraft/mc-mods/slime-golem
