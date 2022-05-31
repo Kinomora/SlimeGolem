@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.18.2_DEV01`'
+version = '1.18.2_DEV01'
 group = 'com.kinomora.slimegolems' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'SlimeGolems'
 
