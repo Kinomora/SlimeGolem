@@ -6,19 +6,18 @@ import com.kinomora.slimegolem.block.SlimeLayerBlock;
 import com.kinomora.slimegolem.entity.SlimeGolemEntity;
 import com.kinomora.slimegolem.entity.SlimeballEntity;
 import com.kinomora.slimegolem.render.SlimeGolemRenderer;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.SpriteRenderer;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
+import com.kinomora.slimegolem.render.model.SlimeGolemModel;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
@@ -68,18 +67,26 @@ public class RegistryHandler {
         IForgeRegistry<EntityType<?>> reg = event.getRegistry();
 
         //Register the Slimegolem (snowman) entity
-        reg.register(EntityType.Builder.create(SlimeGolemEntity::new, EntityClassification.MISC).size(0.7F, 1.8F).build("slime_golem").setRegistryName(SlimeGolems.createRes("slime_golem")));
+        reg.register(EntityType.Builder.of(SlimeGolemEntity::new, MobCategory.MISC).sized(0.7F, 1.8F).build("slime_golem").setRegistryName(SlimeGolems.createRes("slime_golem")));
 
         //Register the Slimeball (snowball) entity
-        reg.register(EntityType.Builder.<SlimeballEntity>create(SlimeballEntity::new, EntityClassification.MISC).size(0.25f, 0.25f).setUpdateInterval(3).setTrackingRange(16).setShouldReceiveVelocityUpdates(true).build("slimeball_entity").setRegistryName(SlimeGolems.createRes("slimeball_entity")));
+        reg.register(EntityType.Builder.<SlimeballEntity>of(SlimeballEntity::new, MobCategory.MISC).sized(0.25f, 0.25f).setUpdateInterval(3).setTrackingRange(16).setShouldReceiveVelocityUpdates(true).build("slimeball_entity").setRegistryName(SlimeGolems.createRes("slimeball_entity")));
     }
 
     //subscribes to the register event for entities
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public static void registerModels(ModelRegistryEvent event) {
+    public static void registerModels(EntityRenderersEvent.RegisterRenderers event) {
         //registers the slime golem model
-        RenderingRegistry.registerEntityRenderingHandler(SLIME_GOLEM, SlimeGolemRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(SLIMEBALL_ENTITY, renderManager -> new SpriteRenderer<>(renderManager, Minecraft.getInstance().getItemRenderer()));
+        event.registerEntityRenderer(SLIME_GOLEM, SlimeGolemRenderer::new);
+        event.registerEntityRenderer(SLIMEBALL_ENTITY, ThrownItemRenderer::new);
+    }
+
+    //subscribes to the register event for entities
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        //registers the slime golem layers
+        event.registerLayerDefinition(SlimeGolemRenderer.MODEL_RES, SlimeGolemModel::createBodyLayer);
     }
 }

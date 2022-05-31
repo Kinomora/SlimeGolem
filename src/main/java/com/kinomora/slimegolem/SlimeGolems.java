@@ -2,15 +2,14 @@ package com.kinomora.slimegolem;
 
 import com.kinomora.slimegolem.config.ModConfig;
 import com.kinomora.slimegolem.entity.SlimeGolemEntity;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +28,7 @@ public class SlimeGolems {
 
     public SlimeGolems() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::addEntityAttributes);
 
         ForgeConfigSpec.Builder  configBuilder = new ForgeConfigSpec.Builder();
         ModConfig.init(configBuilder);
@@ -37,12 +36,12 @@ public class SlimeGolems {
     }
 
     private void clientSetup(FMLClientSetupEvent event) {
-        RenderTypeLookup.setRenderLayer(RegistryHandler.SLIME_LAYER, RenderType.getTranslucent());
-        RenderTypeLookup.setRenderLayer(RegistryHandler.SLIME_BLOCK, RenderType.getTranslucent());
-        RenderTypeLookup.setRenderLayer(RegistryHandler.CARVED_MELON_BLOCK, RenderType.getSolid());
+        ItemBlockRenderTypes.setRenderLayer(RegistryHandler.SLIME_LAYER, RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(RegistryHandler.SLIME_BLOCK, RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(RegistryHandler.CARVED_MELON_BLOCK, RenderType.solid());
     }
 
-    private void setup(FMLCommonSetupEvent event) {
-        GlobalEntityTypeAttributes.put(RegistryHandler.SLIME_GOLEM, SlimeGolemEntity.attributes().create());
+    private void addEntityAttributes(EntityAttributeCreationEvent event) {
+        event.put(RegistryHandler.SLIME_GOLEM, SlimeGolemEntity.attributes().build());
     }
 }

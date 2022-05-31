@@ -2,65 +2,75 @@ package com.kinomora.slimegolem.entity;
 
 import com.kinomora.slimegolem.RegistryHandler;
 import com.kinomora.slimegolem.config.ModConfig;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.GolemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.IForgeShearable;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, IForgeShearable {
-    private static final DataParameter<Byte> MELON_EQUIPPED = EntityDataManager.createKey(SlimeGolemEntity.class, DataSerializers.BYTE);
-    private static final DataParameter<Boolean> ROCKY = EntityDataManager.createKey(SlimeGolemEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> IRONY = EntityDataManager.createKey(SlimeGolemEntity.class, DataSerializers.BOOLEAN);
+public class SlimeGolemEntity extends AbstractGolem implements RangedAttackMob, IForgeShearable {
+    private static final EntityDataAccessor<Byte> MELON_EQUIPPED = SynchedEntityData.defineId(SlimeGolemEntity.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Boolean> ROCKY = SynchedEntityData.defineId(SlimeGolemEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IRONY = SynchedEntityData.defineId(SlimeGolemEntity.class, EntityDataSerializers.BOOLEAN);
 
-    public SlimeGolemEntity(EntityType<? extends SlimeGolemEntity> type, World worldIn) {
+    public SlimeGolemEntity(EntityType<? extends SlimeGolemEntity> type, Level worldIn) {
         super(type, worldIn);
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.25D, 20, 10.0F));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D, 1.0000001E-5F));
-        this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, MobEntity.class, 10, true, false, (p_213621_0_) -> {
-            return p_213621_0_ instanceof IMob;
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D, 1.0000001E-5F));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Mob.class, 10, true, false, (p_213621_0_) -> {
+            return p_213621_0_ instanceof Enemy;
         }));
     }
 
-    public static AttributeModifierMap.MutableAttribute attributes() {
-        return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 4.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
+    public static AttributeSupplier.Builder attributes() {
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(MELON_EQUIPPED, (byte) 16);
-        this.dataManager.register(ROCKY, false);
-        this.dataManager.register(IRONY, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(MELON_EQUIPPED, (byte) 16);
+        this.entityData.define(ROCKY, false);
+        this.entityData.define(IRONY, false);
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         compound.putBoolean("Melon", this.isMelonEquipped());
         compound.putBoolean("Rocky", this.isRocky());
         //compound.putBoolean("Irony", this.isIrony());
@@ -69,8 +79,8 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
         if (compound.contains("Melon")) {
             this.setMelonEquipped(compound.getBoolean("Melon"));
         }
@@ -84,18 +94,18 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote) {
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide) {
             int i, j, k;
             //Slime melts in the rain
-            if (this.isInWaterRainOrBubbleColumn() && ModConfig.get().enableRainDamage.get()) {
+            if (this.isInWaterRainOrBubble() && ModConfig.get().enableRainDamage.get()) {
                 // Does the mob take damage from water or rain
-                this.attackEntityFrom(DamageSource.DROWN, 1.0F);
+                this.hurt(DamageSource.DROWN, 1.0F);
             }
 
             //Mob griefing = false; Exits the method before executing the slime layers code
-            if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this)) {
+            if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
                 return;
             }
 
@@ -107,15 +117,15 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
             }
 
             //lay slime everywhere it walks, can change this to only slime chunks if wanted
-            BlockState blockstate = RegistryHandler.SLIME_LAYER.getDefaultState();
+            BlockState blockstate = RegistryHandler.SLIME_LAYER.defaultBlockState();
 
             for (int l = 0; l < 4; ++l) {
-                i = MathHelper.floor(this.getPosX() + (double) ((float) (l % 2 * 2 - 1) * 0.25F));
-                j = MathHelper.floor(this.getPosY());
-                k = MathHelper.floor(this.getPosZ() + (double) ((float) (l / 2 % 2 * 2 - 1) * 0.25F));
+                i = Mth.floor(this.getX() + (double) ((float) (l % 2 * 2 - 1) * 0.25F));
+                j = Mth.floor(this.getY());
+                k = Mth.floor(this.getZ() + (double) ((float) (l / 2 % 2 * 2 - 1) * 0.25F));
                 BlockPos blockpos = new BlockPos(i, j, k);
-                if (this.world.isAirBlock(blockpos) && blockstate.isValidPosition(this.world, blockpos)) {
-                    this.world.setBlockState(blockpos, blockstate);
+                if (this.level.isEmptyBlock(blockpos) && blockstate.canSurvive(this.level, blockpos)) {
+                    this.level.setBlockAndUpdate(blockpos, blockstate);
                 }
             }
         }
@@ -124,42 +134,42 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
     /**
      * Attack the specified entity using a ranged attack.
      */
-    public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-        SlimeballEntity SlimeballEntity = new SlimeballEntity(this.world, this);
-        double d0 = target.getPosYEye() - (double) 1.1F;
-        double d1 = target.getPosX() - this.getPosX();
-        double d2 = d0 - SlimeballEntity.getPosY();
-        double d3 = target.getPosZ() - this.getPosZ();
-        float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
+    public void performRangedAttack(LivingEntity target, float distanceFactor) {
+        SlimeballEntity SlimeballEntity = new SlimeballEntity(this.level, this);
+        double d0 = target.getEyeY() - (double) 1.1F;
+        double d1 = target.getX() - this.getX();
+        double d2 = d0 - SlimeballEntity.getY();
+        double d3 = target.getZ() - this.getZ();
+        float f = Mth.sqrt((float)(d1 * d1 + d3 * d3)) * 0.2F;
         SlimeballEntity.shoot(d1, d2 + (double) f, d3, 1.6F, 12.0F);
-        this.playSound(SoundEvents.ENTITY_SNOW_GOLEM_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.world.addEntity(SlimeballEntity);
+        this.playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+        this.level.addFreshEntity(SlimeballEntity);
     }
 
-    protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
+    protected float getStandingEyeHeight(Pose poseIn, EntityDimensions sizeIn) {
         return 1.7F;
     }
 
     public boolean isMelonEquipped() {
-        return (this.dataManager.get(MELON_EQUIPPED) & 16) != 0;
+        return (this.entityData.get(MELON_EQUIPPED) & 16) != 0;
     }
 
     public void setMelonEquipped(boolean melonEquipped) {
-        byte b0 = this.dataManager.get(MELON_EQUIPPED);
+        byte b0 = this.entityData.get(MELON_EQUIPPED);
         if (melonEquipped) {
-            this.dataManager.set(MELON_EQUIPPED, (byte) (b0 | 16));
+            this.entityData.set(MELON_EQUIPPED, (byte) (b0 | 16));
         } else {
-            this.dataManager.set(MELON_EQUIPPED, (byte) (b0 & -17));
+            this.entityData.set(MELON_EQUIPPED, (byte) (b0 & -17));
         }
 
     }
 
     public boolean isRocky() {
-        return this.dataManager.get(ROCKY);
+        return this.entityData.get(ROCKY);
     }
 
     public void setRocky(boolean rocky) {
-        this.dataManager.set(ROCKY, rocky);
+        this.entityData.set(ROCKY, rocky);
     }
 
     /*public boolean isIrony() {
@@ -172,26 +182,26 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
 
     @Nullable
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_SLIME_SQUISH;
+        return SoundEvents.SLIME_SQUISH;
     }
 
     @Nullable
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_SLIME_HURT;
+        return SoundEvents.SLIME_HURT;
     }
 
     @Nullable
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_SLIME_DEATH;
+        return SoundEvents.SLIME_DEATH;
     }
 
     @Override
-    public boolean isShearable(ItemStack item, World world, BlockPos pos) {
+    public boolean isShearable(ItemStack item, Level world, BlockPos pos) {
         return this.isMelonEquipped();
     }
 
     @Override
-    public List<ItemStack> onSheared(PlayerEntity player, ItemStack item, World world, BlockPos pos, int fortune) {
+    public List<ItemStack> onSheared(Player player, ItemStack item, Level world, BlockPos pos, int fortune) {
         List<ItemStack> drops = new ArrayList<>();
         ItemStack melons = new ItemStack(Items.MELON_SLICE, 3 + world.getRandom().nextInt(5));
         drops.add(melons);
@@ -202,14 +212,14 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
 
     //This lets you add cobblestone to a slime golem to make it rocky
     @Override
-    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
+    public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
         //Setting Rocky if it's not already rocky or irony
-        if (!isRocky() && /*!isIrony() &&*/ player.getHeldItem(hand).getItem() == Items.COBBLESTONE && ModConfig.get().enableRockyGolem.get()) {
+        if (!isRocky() && /*!isIrony() &&*/ player.getItemInHand(hand).getItem() == Items.COBBLESTONE && ModConfig.get().enableRockyGolem.get()) {
             setRocky(true);
             if (!player.isCreative()) {
-                player.getHeldItem(hand).shrink(1);
+                player.getItemInHand(hand).shrink(1);
             }
-            return ActionResultType.CONSUME;
+            return InteractionResult.CONSUME;
         /*}
         //Setting Irony if it's not already irony or rocky
         else if (!isRocky() && !isIrony() && player.getHeldItem(hand).getItem() == Items.IRON_INGOT && ModConfig.get().enableIronGolem.get()) {
@@ -217,25 +227,25 @@ public class SlimeGolemEntity extends GolemEntity implements IRangedAttackMob, I
             player.getHeldItem(hand).shrink(1);
             return ActionResultType.CONSUME;*/
         } else {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
     }
 
-    private static boolean isSlimeChunk(World world, double x, double z) {
+    private static boolean isSlimeChunk(Level world, double x, double z) {
         return isSlimeChunk(world, new BlockPos(x, 0, z));
     }
 
-    public static boolean isSlimeChunk(World world, BlockPos pos) {
+    public static boolean isSlimeChunk(Level world, BlockPos pos) {
         ChunkPos chunkpos = new ChunkPos(pos);
-        return SharedSeedRandom.seedSlimeChunk(chunkpos.x, chunkpos.z, ((ServerWorld) world).getSeed(), 987234911L).nextInt(10) == 0;
+        return WorldgenRandom.seedSlimeChunk(chunkpos.x, chunkpos.z, ((ServerLevel) world).getSeed(), 987234911L).nextInt(10) == 0;
     }
 
     private boolean isSlimeSpawnable() {
-        if (this.world.getBiome(this.getPosition()).getRegistryName().toString().equals("minecraft:swamp") || this.world.getBiome(this.getPosition()).getRegistryName().toString().equals("minecraft:swamp_hills")) {
+        if (this.level.getBiome(this.blockPosition()).value().getRegistryName().toString().equals("minecraft:swamp") || this.level.getBiome(this.blockPosition()).value().getRegistryName().toString().equals("minecraft:swamp_hills")) {
             return true;
         }
 
-        if (isSlimeChunk(this.world, this.getPosX(), this.getPosZ())) {
+        if (isSlimeChunk(this.level, this.getX(), this.getZ())) {
             return true;
         }
         return false;
