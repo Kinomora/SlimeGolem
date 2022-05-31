@@ -24,7 +24,7 @@ public class SlimeGolemHeadLayer extends LayerRenderer<SlimeGolemEntity, SlimeGo
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, SlimeGolemEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (!entitylivingbaseIn.isInvisible() && entitylivingbaseIn.isMelonEquipped()) {
             matrixStackIn.push();
-            this.getEntityModel().func_205070_a().translateRotate(matrixStackIn);
+            this.getEntityModel().getHead().translateRotate(matrixStackIn);
             float f = 0.625F;
             matrixStackIn.translate(0.0D, -0.34375D, 0.0D);
             matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180.0F));

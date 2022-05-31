@@ -18,7 +18,6 @@ public class SlimeGolemModel extends SegmentedModel<SlimeGolemEntity> {
     private final ModelRenderer rockyHeadInner;
     private final ModelRenderer rockyBodyMiddleInner;
     private final ModelRenderer rockyBodyBottomInner;
-    public SlimeGolemEntity slimeGolemEntity;
 
     public SlimeGolemModel() {
         float f = 4.0F;
@@ -101,7 +100,7 @@ public class SlimeGolemModel extends SegmentedModel<SlimeGolemEntity> {
         return ImmutableList.of(this.bodyMiddle, this.bottomBody, this.head, this.rightArm, this.leftArm, this.rockyBodyBottomInner, this.rockyBodyMiddleInner, this.rockyHeadInner);
     }
 
-    public ModelRenderer func_205070_a() {
+    public ModelRenderer getHead() {
         return this.head;
     }
 }

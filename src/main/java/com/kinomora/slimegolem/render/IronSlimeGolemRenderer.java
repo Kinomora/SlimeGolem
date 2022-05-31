@@ -19,7 +19,7 @@ public class IronSlimeGolemRenderer extends MobRenderer<IronSlimeGolemEntity, Ir
 
     public IronSlimeGolemRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new IronSlimeGolemModel<>(), 0.7F);
-        this.addLayer(new IronSlimeGolemCracksLayer(this));
+        //this.addLayer(new IronSlimeGolemCracksLayer(this));
     }
 
     /**
