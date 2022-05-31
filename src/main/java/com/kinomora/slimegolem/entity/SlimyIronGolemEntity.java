@@ -78,7 +78,7 @@ public class SlimyIronGolemEntity extends AbstractGolem implements NeutralMob {
         this.entityData.define(DATA_FLAGS_ID, (byte)0);
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
+    public static AttributeSupplier.Builder attributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 100.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).add(Attributes.ATTACK_DAMAGE, 15.0D);
     }
 

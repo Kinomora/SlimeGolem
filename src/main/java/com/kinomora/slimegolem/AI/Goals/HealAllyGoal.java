@@ -89,7 +89,6 @@ public class HealAllyGoal extends Goal {
         }
 
         if (!(d0 > (double)this.maxAttackDistance) && this.seeTime >= 5) {
-            //this.entityHost.getNavigator().clearPath(); //Old code
             this.entityHost.getNavigation().stop();
         } else {
             this.entityHost.getNavigation().moveTo(this.attackTarget, this.entityMoveSpeed);

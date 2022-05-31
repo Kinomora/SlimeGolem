@@ -25,7 +25,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 
-public class SlimeballEntity extends ThrowableItemProjectile{
+public class SlimeballEntity extends ThrowableItemProjectile {
     public SlimeballEntity(EntityType<? extends SlimeballEntity> entityType, Level world) {
         super(entityType, world);
     }
@@ -65,25 +65,31 @@ public class SlimeballEntity extends ThrowableItemProjectile{
      */
     protected void onHit(HitResult result) {
         if (result.getType() == HitResult.Type.ENTITY) {
-            Entity entity = ((EntityHitResult) result).getEntity();
+            if (((EntityHitResult) result).getEntity() instanceof LivingEntity) {
 
-            //Set damage based on if the golem is rocky or not
-            float damage = 0;
-            Entity shooter = this.getOwner();
-            if(shooter instanceof SlimeGolemEntity && ((SlimeGolemEntity) shooter).isRocky() && ModConfig.get().enableRockyGolem.get()){
-                damage = 3;
-            }
+                LivingEntity entity = (LivingEntity) ((EntityHitResult) result).getEntity();
 
-            //Attack hostile mobs
-            entity.hurt(DamageSource.thrown(this, shooter), damage);
+                //Set damage based on if the golem is rocky or not
+                float damage = 0;
+                Entity shooter = this.getOwner();
+                if (shooter instanceof SlimeGolemEntity && ((SlimeGolemEntity) shooter).isRocky() && ModConfig.get().enableRockyGolem.get()) {
+                    damage = 3;
+                }
 
-            //apply Slowness potion effect
-            if(entity instanceof LivingEntity){
-                int j = 20 + ((LivingEntity) entity).getRandom().nextInt(10 * 3);
-                ((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, j, 3));
+                if (entity.getType() == RegistryHandler.SLIMY_IRON_GOLEM) {
+                    entity.heal(5);
+                } else {
+                    //Attack hostile mobs
+                    entity.hurt(DamageSource.thrown(this, shooter), damage);
+                }
+
+                //apply Slowness potion effect
+                if (entity instanceof LivingEntity) {
+                    int j = 20 + ((LivingEntity) entity).getRandom().nextInt(10 * 3);
+                    ((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, j, 3));
+                }
             }
         }
-
         if (!this.level.isClientSide) {
             this.level.broadcastEntityEvent(this, (byte) 3);
             this.discard();

@@ -96,6 +96,7 @@ dependencies {
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
     // compile "some.group:artifact:version"
+    runtimeOnly fg.deobf("com.blank:Neat+1.8:30")
 
     // Real examples
     // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
@@ -111,6 +112,15 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+}
+
+repositories {
+    // Put repositories for dependencies here
+    // ForgeGradle automatically adds the Forge maven and Maven Central for you
+    // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
+     flatDir {
+         dir 'libs'
+     }
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

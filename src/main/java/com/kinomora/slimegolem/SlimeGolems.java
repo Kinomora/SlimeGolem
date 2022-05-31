@@ -2,6 +2,7 @@ package com.kinomora.slimegolem;
 
 import com.kinomora.slimegolem.config.ModConfig;
 import com.kinomora.slimegolem.entity.SlimeGolemEntity;
+import com.kinomora.slimegolem.entity.SlimyIronGolemEntity;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -43,6 +44,6 @@ public class SlimeGolems {
 
     private void addEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(RegistryHandler.SLIME_GOLEM, SlimeGolemEntity.attributes().build());
-        event.put(RegistryHandler.SLIMY_IRON_GOLEM, SlimeGolemEntity.attributes().build());
+        event.put(RegistryHandler.SLIMY_IRON_GOLEM, SlimyIronGolemEntity.attributes().build());
     }
 }

@@ -53,7 +53,13 @@ public class SlimeGolemEntity extends AbstractGolem implements RangedAttackMob, 
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D, 1.0000001E-5F));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Mob.class, 10, true, false, (p_213621_0_) -> {
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, SlimyIronGolemEntity.class, 10, true, false, (target) -> {
+            if (target instanceof SlimyIronGolemEntity) {
+                return target.getHealth() < (target.getMaxHealth() / 2);
+            }
+            return false;
+        }));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Mob.class, 10, true, false, (p_213621_0_) -> {
             return p_213621_0_ instanceof Enemy;
         }));
     }
@@ -111,7 +117,7 @@ public class SlimeGolemEntity extends AbstractGolem implements RangedAttackMob, 
 
             //alternateLayers = true; Slime layers can only be laid in slime chunks or swamps
             if (ModConfig.get().alternateLayers.get()) {
-                if(!isSlimeSpawnable()){
+                if (!isSlimeSpawnable()) {
                     return;
                 }
             }
@@ -140,7 +146,7 @@ public class SlimeGolemEntity extends AbstractGolem implements RangedAttackMob, 
         double d1 = target.getX() - this.getX();
         double d2 = d0 - SlimeballEntity.getY();
         double d3 = target.getZ() - this.getZ();
-        float f = Mth.sqrt((float)(d1 * d1 + d3 * d3)) * 0.2F;
+        float f = Mth.sqrt((float) (d1 * d1 + d3 * d3)) * 0.2F;
         SlimeballEntity.shoot(d1, d2 + (double) f, d3, 1.6F, 12.0F);
         this.playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         this.level.addFreshEntity(SlimeballEntity);
