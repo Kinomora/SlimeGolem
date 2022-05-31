@@ -1,17 +1,17 @@
 package com.kinomora.slimegolem.AI.Goals;
 
 import com.kinomora.slimegolem.entity.SlimyIronGolemEntity;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.monster.RangedAttackMob;
 
 import java.util.EnumSet;
 
 public class HealAllyGoal extends Goal {
-    private final MobEntity entityHost;
-    private final IRangedAttackMob rangedAttackEntityHost;
+    private final Mob entityHost;
+    private final RangedAttackMob rangedAttackEntityHost;
     private LivingEntity attackTarget;
     private int rangedAttackTime = -1;
     private final double entityMoveSpeed;
@@ -21,22 +21,22 @@ public class HealAllyGoal extends Goal {
     private final float attackRadius;
     private final float maxAttackDistance;
 
-    public HealAllyGoal(IRangedAttackMob attacker, double movespeed, int maxAttackTime, float maxAttackDistanceIn) {
+    public HealAllyGoal(RangedAttackMob attacker, double movespeed, int maxAttackTime, float maxAttackDistanceIn) {
         this(attacker, movespeed, maxAttackTime, maxAttackTime, maxAttackDistanceIn);
     }
 
-    public HealAllyGoal(IRangedAttackMob attacker, double movespeed, int attackIntervalMin, int maxAttackTime, float maxAttackDistanceIn) {
+    public HealAllyGoal(RangedAttackMob attacker, double movespeed, int attackIntervalMin, int maxAttackTime, float maxAttackDistanceIn) {
         if (!(attacker instanceof LivingEntity)) {
             throw new IllegalArgumentException("ArrowAttackGoal requires Mob implements RangedAttackMob");
         } else {
             this.rangedAttackEntityHost = attacker;
-            this.entityHost = (MobEntity)attacker;
+            this.entityHost = (Mob)attacker;
             this.entityMoveSpeed = movespeed;
             this.attackIntervalMin = attackIntervalMin;
             this.maxRangedAttackTime = maxAttackTime;
             this.attackRadius = maxAttackDistanceIn;
             this.maxAttackDistance = maxAttackDistanceIn * maxAttackDistanceIn;
-            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
     }
 
@@ -45,7 +45,7 @@ public class HealAllyGoal extends Goal {
      * method as well.
      */
     public boolean shouldExecute() {
-        LivingEntity livingentity = this.entityHost.getAttackTarget();
+        LivingEntity livingentity = this.entityHost.getTarget();
         if (livingentity != null && livingentity.isAlive() && livingentity instanceof SlimyIronGolemEntity) {
             System.out.println("True");
             this.attackTarget = livingentity;
@@ -59,7 +59,7 @@ public class HealAllyGoal extends Goal {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     public boolean shouldContinueExecuting() {
-        return this.shouldExecute() || !this.entityHost.getNavigator().noPath();
+        return this.shouldExecute() || !this.entityHost.getNavigation().isStuck();
     }
 
     /**
@@ -71,12 +71,17 @@ public class HealAllyGoal extends Goal {
         this.rangedAttackTime = -1;
     }
 
+    @Override
+    public boolean canUse() {
+        return false;
+    }
+
     /**
      * Keep ticking a continuous task that has already been started
      */
     public void tick() {
-        double d0 = this.entityHost.getDistanceSq(this.attackTarget.getPosX(), this.attackTarget.getPosY(), this.attackTarget.getPosZ());
-        boolean flag = this.entityHost.getEntitySenses().canSee(this.attackTarget);
+        double d0 = this.entityHost.distanceToSqr(this.attackTarget.getX(), this.attackTarget.getY(), this.attackTarget.getZ());
+        boolean flag = this.entityHost.getSensing().hasLineOfSight(this.attackTarget);
         if (flag) {
             ++this.seeTime;
         } else {
@@ -84,24 +89,25 @@ public class HealAllyGoal extends Goal {
         }
 
         if (!(d0 > (double)this.maxAttackDistance) && this.seeTime >= 5) {
-            this.entityHost.getNavigator().clearPath();
+            //this.entityHost.getNavigator().clearPath(); //Old code
+            this.entityHost.getNavigation().stop();
         } else {
-            this.entityHost.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.entityMoveSpeed);
+            this.entityHost.getNavigation().moveTo(this.attackTarget, this.entityMoveSpeed);
         }
 
-        this.entityHost.getLookController().setLookPositionWithEntity(this.attackTarget, 30.0F, 30.0F);
+        this.entityHost.getLookControl().setLookAt(this.attackTarget, 30.0F, 30.0F);
         if (--this.rangedAttackTime == 0) {
             if (!flag) {
                 return;
             }
 
-            float f = MathHelper.sqrt(d0) / this.attackRadius;
-            float lvt_5_1_ = MathHelper.clamp(f, 0.1F, 1.0F);
-            this.rangedAttackEntityHost.attackEntityWithRangedAttack(this.attackTarget, lvt_5_1_);
-            this.rangedAttackTime = MathHelper.floor(f * (float)(this.maxRangedAttackTime - this.attackIntervalMin) + (float)this.attackIntervalMin);
+            float f = Mth.sqrt(0f) / this.attackRadius;
+            float lvt_5_1_ = Mth.clamp(f, 0.1F, 1.0F);
+            this.rangedAttackEntityHost.performRangedAttack(this.attackTarget,lvt_5_1_);
+            this.rangedAttackTime = Mth.floor(f * (float)(this.maxRangedAttackTime - this.attackIntervalMin) + (float)this.attackIntervalMin);
         } else if (this.rangedAttackTime < 0) {
-            float f2 = MathHelper.sqrt(d0) / this.attackRadius;
-            this.rangedAttackTime = MathHelper.floor(f2 * (float)(this.maxRangedAttackTime - this.attackIntervalMin) + (float)this.attackIntervalMin);
+            float f2 = Mth.sqrt(0f) / this.attackRadius;
+            this.rangedAttackTime = Mth.floor(f2 * (float)(this.maxRangedAttackTime - this.attackIntervalMin) + (float)this.attackIntervalMin);
         }
 
     }

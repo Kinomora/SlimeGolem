@@ -13,11 +13,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SlimyIronGolemRenderer extends MobRenderer<SlimyIronGolemEntity, SlimyIronGolemModel<SlimyIronGolemEntity>> {
     private static final ResourceLocation SLIMY_IRON_GOLEM_TEXTURES = SlimeGolems.createRes("textures/entity/iron_slime_golem/iron_slime_golem.png");
-    public static final ModelLayerLocation MODEL_RES = new ModelLayerLocation(SlimeGolems.createRes("model"), "main");
+    public static final ModelLayerLocation MODEL_RES = new ModelLayerLocation(SlimeGolems.createRes("slimy_iron_golem_model"), "main");
 
     public SlimyIronGolemRenderer(EntityRendererProvider.Context ctx) {
-        super(ctx, new SlimyIronGolemModel<>(), 0.7F);
-        //this.addLayer(new SlimyIronGolemCracksLayer(this));
+        super(ctx, new SlimyIronGolemModel(ctx.bakeLayer(MODEL_RES)), 0.7F);
+        this.addLayer(new SlimyIronGolemCracksLayer(this));
     }
 
     /**
