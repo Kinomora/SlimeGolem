@@ -27,14 +27,31 @@ public class SlimeGolemModel extends ListModel<SlimeGolemEntity> {
         this.slimeMiddle = part.getChild("slimeMiddle");
         this.slimeLower = part.getChild("slimeLower");
 
-
         this.rockyHead = part.getChild("rockyHead");
         this.rockyMiddle = part.getChild("rockyMiddle");
         this.rockyLower = part.getChild("rockyLower");
 
-
         this.leftArm = part.getChild("leftArm");
         this.rightArm = part.getChild("rightArm");
+    }
+
+    public static LayerDefinition createBodyLayer(){
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition root = mesh.getRoot();
+        CubeDeformation deform = new CubeDeformation(-0.5F);
+
+        root.addOrReplaceChild("slimeHead", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -7.90F, -4.0F, 8.0F, 8.0F, 8.0F, deform), PartPose.offset(0.0F, 4.0F, 0.0F));
+        root.addOrReplaceChild("slimeMiddle", CubeListBuilder.create().texOffs(0, 16).addBox(-5.0F, -9.95F, -5.0F, 10.0F, 10.0F, 10.0F, deform), PartPose.offset(0.0F, 13.0F, 0.0F));
+        root.addOrReplaceChild("slimeLower", CubeListBuilder.create().texOffs(0, 36).addBox(-6.0F, -12.0F, -6.0F, 12.0F, 12.0F, 12.0F, deform), PartPose.offset(0.0F, 24.0F, 0.0F));
+
+        root.addOrReplaceChild("rockyHead", CubeListBuilder.create().texOffs(0,60).addBox(-3.0F, -6.90F, -3.0F, 6.0F, 6.0F, 6.0F, deform), PartPose.offset(0.0F, 4.0F, 0.0F));
+        root.addOrReplaceChild("rockyMiddle", CubeListBuilder.create().texOffs(0, 72).addBox(-4.0F, -8.95F, -4.0F, 8.0F, 8.0F, 8.0F, deform), PartPose.offset(0.0F, 13.0F, 0.0F));
+        root.addOrReplaceChild("rockyLower", CubeListBuilder.create().texOffs(0, 88).addBox(-5.0F, -11.0F, -5.0F, 10.0F, 10.0F, 10.0F, deform), PartPose.offset(0.0F, 24.0F, 0.0F));
+
+        root.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(32,0).addBox(-1.0F, 0.05F, -1.0F, 12.0F, 2.0F, 2.0F, deform), PartPose.offset(0.0F, 6.0F, 0.0F));
+        root.addOrReplaceChild("rightArm", CubeListBuilder.create().texOffs(32,0).addBox(-1.0F, 0.05F, -1.0F, 12.0F, 2.0F, 2.0F, deform), PartPose.offset(0.0F, 6.0F, 0.0F));
+
+        return LayerDefinition.create(mesh, 64, 128);
     }
 
     //Old Constructor
@@ -78,25 +95,6 @@ public class SlimeGolemModel extends ListModel<SlimeGolemEntity> {
         this.leftArm.addBox(-1.0F, 0.05F, -1.0F, 12.0F, 2.0F, 2.0F, -0.5F);
         this.leftArm.setPos(0.0F, 6.0F, 0.0F);
     }*/
-
-    public static LayerDefinition createBodyLayer(){
-        MeshDefinition mesh = new MeshDefinition();
-        PartDefinition root = mesh.getRoot();
-        CubeDeformation deform = new CubeDeformation(-0.5F);
-
-        root.addOrReplaceChild("slimeHead", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -7.90F, -4.0F, 8.0F, 8.0F, 8.0F, deform), PartPose.offset(0.0F, 4.0F, 0.0F));
-        root.addOrReplaceChild("slimeMiddle", CubeListBuilder.create().texOffs(0, 16).addBox(-5.0F, -9.95F, -5.0F, 10.0F, 10.0F, 10.0F, deform), PartPose.offset(0.0F, 13.0F, 0.0F));
-        root.addOrReplaceChild("slimeLower", CubeListBuilder.create().texOffs(0, 36).addBox(-6.0F, -12.0F, -6.0F, 12.0F, 12.0F, 12.0F, deform), PartPose.offset(0.0F, 24.0F, 0.0F));
-
-        root.addOrReplaceChild("rockyHead", CubeListBuilder.create().texOffs(0,60).addBox(-3.0F, -6.90F, -3.0F, 6.0F, 6.0F, 6.0F, deform), PartPose.offset(0.0F, 4.0F, 0.0F));
-        root.addOrReplaceChild("rockyMiddle", CubeListBuilder.create().texOffs(0, 72).addBox(-4.0F, -8.95F, -4.0F, 8.0F, 8.0F, 8.0F, deform), PartPose.offset(0.0F, 13.0F, 0.0F));
-        root.addOrReplaceChild("rockyLower", CubeListBuilder.create().texOffs(0, 88).addBox(-5.0F, -11.0F, -5.0F, 10.0F, 10.0F, 10.0F, deform), PartPose.offset(0.0F, 24.0F, 0.0F));
-
-        root.addOrReplaceChild("slimeLeftArm", CubeListBuilder.create().texOffs(32,0).addBox(-1.0F, 0.05F, -1.0F, 12.0F, 2.0F, 2.0F, deform), PartPose.offset(0.0F, 6.0F, 0.0F));
-        root.addOrReplaceChild("slimeRightArm", CubeListBuilder.create().texOffs(32,0).addBox(-1.0F, 0.05F, -1.0F, 12.0F, 2.0F, 2.0F, deform), PartPose.offset(0.0F, 6.0F, 0.0F));
-
-        return LayerDefinition.create(mesh, 64, 128);
-    }
 
     @Override
     public void prepareMobModel(SlimeGolemEntity entityIn, float limbSwing, float limbSwingAmount, float partialTick) {

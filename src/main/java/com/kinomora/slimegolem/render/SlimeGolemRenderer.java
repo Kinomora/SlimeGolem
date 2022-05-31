@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SlimeGolemRenderer extends MobRenderer<SlimeGolemEntity, SlimeGolemModel> {
     private static final ResourceLocation SLIME_GOLEM_TEXTURES = SlimeGolems.createRes("textures/entity/slimeman_wacko.png");
-    public static final ModelLayerLocation MODEL_RES = new ModelLayerLocation(SlimeGolems.createRes("slimeGolemModel"), "main");
+    public static final ModelLayerLocation MODEL_RES = new ModelLayerLocation(SlimeGolems.createRes("model"), "main");
 
     public SlimeGolemRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new SlimeGolemModel(ctx.bakeLayer(MODEL_RES)), 0.5F);
