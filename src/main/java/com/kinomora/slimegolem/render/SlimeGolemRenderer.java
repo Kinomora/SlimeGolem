@@ -1,6 +1,9 @@
-package com.kinomora.slimegolem;
+package com.kinomora.slimegolem.render;
 
 
+import com.kinomora.slimegolem.SlimeGolems;
+import com.kinomora.slimegolem.entity.SlimeGolemEntity;
+import com.kinomora.slimegolem.render.model.SlimeGolemModel;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

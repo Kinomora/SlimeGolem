@@ -1,5 +1,8 @@
-package com.kinomora.slimegolem;
+package com.kinomora.slimegolem.render;
 
+import com.kinomora.slimegolem.RegistryHandler;
+import com.kinomora.slimegolem.entity.SlimeGolemEntity;
+import com.kinomora.slimegolem.render.model.SlimeGolemModel;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

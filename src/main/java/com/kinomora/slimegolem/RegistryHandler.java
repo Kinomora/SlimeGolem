@@ -1,5 +1,11 @@
 package com.kinomora.slimegolem;
 
+import com.kinomora.slimegolem.block.CarvedMelonBlock;
+import com.kinomora.slimegolem.block.SlimeBlock;
+import com.kinomora.slimegolem.block.SlimeLayerBlock;
+import com.kinomora.slimegolem.entity.SlimeGolemEntity;
+import com.kinomora.slimegolem.entity.SlimeballEntity;
+import com.kinomora.slimegolem.render.SlimeGolemRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.SpriteRenderer;

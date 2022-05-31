@@ -1,5 +1,7 @@
-package com.kinomora.slimegolem;
+package com.kinomora.slimegolem.entity;
 
+import com.kinomora.slimegolem.RegistryHandler;
+import com.kinomora.slimegolem.config.ModConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

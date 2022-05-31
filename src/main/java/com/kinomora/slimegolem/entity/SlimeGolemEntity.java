@@ -1,5 +1,7 @@
-package com.kinomora.slimegolem;
+package com.kinomora.slimegolem.entity;
 
+import com.kinomora.slimegolem.RegistryHandler;
+import com.kinomora.slimegolem.config.ModConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;

@@ -1,5 +1,7 @@
 package com.kinomora.slimegolem;
 
+import com.kinomora.slimegolem.config.ModConfig;
+import com.kinomora.slimegolem.entity.SlimeGolemEntity;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;

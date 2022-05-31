@@ -1,4 +1,4 @@
-package com.kinomora.slimegolem;
+package com.kinomora.slimegolem.config;
 
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;

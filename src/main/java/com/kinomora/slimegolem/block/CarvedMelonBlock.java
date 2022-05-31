@@ -1,4 +1,4 @@
-package com.kinomora.slimegolem;
+package com.kinomora.slimegolem.block;
 
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.SoundType;
