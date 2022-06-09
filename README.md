@@ -18,4 +18,5 @@ Features:
 [1.19.0](https://github.com/Kinomora/SlimeGolem) (Coming Soon)
 
 [CurseForge Page] https://www.curseforge.com/minecraft/mc-mods/slime-golem
+
 [Modrinth Page] https://modrinth.com/mod/slime-golems
