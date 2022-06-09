@@ -11,11 +11,13 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -56,9 +58,13 @@ public class RegistryHandler {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         //registers the items
-        event.getRegistry().register(new BlockItem(SLIME_LAYER, new Item.Properties()).setRegistryName(SlimeGolems.createRes("slime_layer")));
+        //event.getRegistry().register(new BlockItem(SLIME_LAYER, new Item.Properties()).setRegistryName(SlimeGolems.createRes("slime_layer")));
         event.getRegistry().register(new BlockItem(SLIME_BLOCK, new Item.Properties()).setRegistryName(SlimeGolems.createRes("slime_block")));
         event.getRegistry().register(new BlockItem(CARVED_MELON_BLOCK, new Item.Properties()).setRegistryName(SlimeGolems.createRes("carved_melon_block")));
+
+        //Register Eggs
+        event.getRegistry().register(new ForgeSpawnEggItem(()->SLIME_GOLEM, 0x2ed941, 0x8fed5c, new Item.Properties().tab(CreativeModeTab.TAB_MISC)).setRegistryName(SlimeGolems.createRes("slime_golem_spawn_egg")));
+        //event.getRegistry().register(new ForgeSpawnEggItem(()->SLIMY_IRON_GOLEM, 0x2ed941, 0x8fed5c, new Item.Properties().tab(CreativeModeTab.TAB_MISC)).setRegistryName(SlimeGolems.createRes("slimy_iron_golem_spawn_egg")));
     }
 
     //subscribes to the register event for entities
