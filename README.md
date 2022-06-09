@@ -13,6 +13,8 @@ Features:
 
 [1.16.5](https://github.com/Kinomora/SlimeGolem/releases/tag/1.16.5_FINAL) Release: Final
 
-[1.18.2](https://github.com/Kinomora/SlimeGolem/releases/tag/1.18.2_RC02) Release: RC02
+[1.18.2](https://github.com/Kinomora/SlimeGolem/releases/tag/1.18.2_01) Release: 1
+
+[1.19.2]() (Coming Soon)
 
 [CurseForge Page] https://www.curseforge.com/minecraft/mc-mods/slime-golem
