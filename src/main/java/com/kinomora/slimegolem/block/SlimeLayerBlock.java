@@ -66,7 +66,7 @@ public class SlimeLayerBlock extends Block {
             if (item.getItem().equals(Items.SLIME_BALL)) {
                 //and that the block you clicked on is a slime layer
 
-                if (state.getBlock().equals(RegistryHandler.SLIME_LAYER)) {
+                if (state.getBlock().equals(RegistryHandler.Blocks.SLIME_LAYER.get())) {
                     int layers = state.getValue(SlimeLayerBlock.LAYERS);
                     //Lets you turn a full 8-layer stack of slime layers into a full slime block
                     if (layers == 8) {
@@ -91,8 +91,8 @@ public class SlimeLayerBlock extends Block {
                 //determine the side of the block that you right clicked on
                 Direction facing = event.getFace();
                 if (state.canBeReplaced(new BlockPlaceContext(new UseOnContext(event.getPlayer(), event.getHand(), new BlockHitResult(event.getPlayer().getLookAngle(), facing.getOpposite(), event.getPos(), false))))) {
-                    if (RegistryHandler.SLIME_LAYER.canSurvive(state, event.getWorld(), event.getPos())) {
-                        event.getWorld().setBlockAndUpdate(event.getPos(), RegistryHandler.SLIME_LAYER.defaultBlockState());
+                    if (RegistryHandler.Blocks.SLIME_LAYER.get().canSurvive(state, event.getWorld(), event.getPos())) {
+                        event.getWorld().setBlockAndUpdate(event.getPos(), RegistryHandler.Blocks.SLIME_LAYER.get().defaultBlockState());
                         if (!event.getPlayer().isCreative()) {
                             item.shrink(1);
                         }
@@ -101,8 +101,8 @@ public class SlimeLayerBlock extends Block {
                 else if (facing.equals(Direction.UP)) {
                     BlockPos newPlacement = event.getPos().relative(facing);
                     if (event.getWorld().getBlockState(newPlacement).canBeReplaced(new BlockPlaceContext(new UseOnContext(event.getPlayer(), event.getHand(), new BlockHitResult(event.getPlayer().getLookAngle(), facing.getOpposite(), newPlacement, false))))) {
-                        if (RegistryHandler.SLIME_LAYER.canSurvive(state, event.getWorld(), newPlacement)) {
-                            event.getWorld().setBlockAndUpdate(newPlacement, RegistryHandler.SLIME_LAYER.defaultBlockState());
+                        if (RegistryHandler.Blocks.SLIME_LAYER.get().canSurvive(state, event.getWorld(), newPlacement)) {
+                            event.getWorld().setBlockAndUpdate(newPlacement, RegistryHandler.Blocks.SLIME_LAYER.get().defaultBlockState());
                             if (!event.getPlayer().isCreative()) {
                                 item.shrink(1);
                             }

@@ -53,49 +53,6 @@ public class SlimeGolemModel extends ListModel<SlimeGolemEntity> {
 
         return LayerDefinition.create(mesh, 64, 128);
     }
-
-    //Old Constructor
-    /*public SlimeGolemModel() {
-        float f = 4.0F;
-        float f1 = 0.0F;
-        //Head - normal
-        this.head = (new ModelPart(this, 0, 0)).setTexSize(64, 128);
-        this.head.addBox(-4.0F, -7.90F, -4.0F, 8.0F, 8.0F, 8.0F, -0.5F);
-        this.head.setPos(0.0F, 4.0F, 0.0F);
-        //Head - rocky
-        this.rockyHeadInner = (new ModelPart(this,0,60)).setTexSize(64,128);
-        this.rockyHeadInner.addBox(-3.0F, -6.90F, -3.0F, 6.0F, 6.0F, 6.0F, -0.5F);
-        this.rockyHeadInner.setPos(0.0F, 4.0F, 0.0F);
-
-        //Middle - normal
-        this.bodyMiddle = (new ModelPart(this, 0, 16)).setTexSize(64, 128);
-        this.bodyMiddle.addBox(-5.0F, -9.95F, -5.0F, 10.0F, 10.0F, 10.0F, -0.5F);
-        this.bodyMiddle.setPos(0.0F, 13.0F, 0.0F);
-        //Middle - rocky
-        this.rockyBodyMiddleInner = (new ModelPart(this, 0, 72)).setTexSize(64, 128);
-        this.rockyBodyMiddleInner.addBox(-4.0F, -8.95F, -4.0F, 8.0F, 8.0F, 8.0F, -0.5F);
-        this.rockyBodyMiddleInner.setPos(0.0F, 13.0F, 0.0F);
-
-        //Lower - normal
-        this.bottomBody = (new ModelPart(this, 0, 36)).setTexSize(64, 128);
-        this.bottomBody.addBox(-6.0F, -12.0F, -6.0F, 12.0F, 12.0F, 12.0F, -0.5F);
-        this.bottomBody.setPos(0.0F, 24.0F, 0.0F);
-        //Lower - rocky
-        this.rockyBodyBottomInner = (new ModelPart(this, 0, 88)).setTexSize(64, 128);
-        this.rockyBodyBottomInner.addBox(-5.0F, -11.0F, -5.0F, 10.0F, 10.0F, 10.0F, -0.5F);
-        this.rockyBodyBottomInner.setPos(0.0F, 24.0F, 0.0F);
-
-
-        //Right arm
-        this.rightArm = (new ModelPart(this, 32, 0)).setTexSize(64, 128);
-        this.rightArm.addBox(-1.0F, 0.05F, -1.0F, 12.0F, 2.0F, 2.0F, -0.5F);
-        this.rightArm.setPos(0.0F, 6.0F, 0.0F);
-        //Left arm
-        this.leftArm = (new ModelPart(this, 32, 0)).setTexSize(64, 128);
-        this.leftArm.addBox(-1.0F, 0.05F, -1.0F, 12.0F, 2.0F, 2.0F, -0.5F);
-        this.leftArm.setPos(0.0F, 6.0F, 0.0F);
-    }*/
-
     @Override
     public void prepareMobModel(SlimeGolemEntity entityIn, float limbSwing, float limbSwingAmount, float partialTick) {
         this.rockyHead.visible = entityIn.isRocky();

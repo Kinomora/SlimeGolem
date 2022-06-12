@@ -31,11 +31,11 @@ public class SlimeballEntity extends ThrowableItemProjectile{
     }
 
     public SlimeballEntity(Level worldIn, LivingEntity throwerIn) {
-        super(RegistryHandler.SLIMEBALL_ENTITY, throwerIn, worldIn);
+        super(RegistryHandler.Entities.SLIMEBALL_ENTITY.get(), throwerIn, worldIn);
     }
 
     public SlimeballEntity(Level worldIn, double x, double y, double z) {
-        super(RegistryHandler.SLIMEBALL_ENTITY, x, y, z, worldIn);
+        super(RegistryHandler.Entities.SLIMEBALL_ENTITY.get(), x, y, z, worldIn);
     }
 
     protected Item getDefaultItem() {

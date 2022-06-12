@@ -8,6 +8,7 @@ import com.kinomora.slimegolem.entity.SlimeballEntity;
 import com.kinomora.slimegolem.render.SlimeGolemRenderer;
 import com.kinomora.slimegolem.render.model.SlimeGolemModel;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.BlockItem;
@@ -18,65 +19,43 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.registries.*;
 
 //bus variable says this class is use for registering and subscribing to the event bus
 @Mod.EventBusSubscriber(modid = SlimeGolems.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class RegistryHandler {
 
-    //an "object holder" makes it so that when a (new) object is created in the "registerblocks" method is created, it will be able to help find the object that is registered
-    //do both of these for each block added, in order to easily reference the block you're adding
-    @ObjectHolder(SlimeGolems.ID + ":slime_layer")
-    public static Block SLIME_LAYER;
 
-    @ObjectHolder(SlimeGolems.ID + ":slime_block")
-    public static Block SLIME_BLOCK;
+    public static class Blocks {
+        public static final DeferredRegister<Block> BLOCK_REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, SlimeGolems.ID);
 
-    @ObjectHolder(SlimeGolems.ID + ":carved_melon_block")
-    public static Block CARVED_MELON_BLOCK;
-
-    @ObjectHolder(SlimeGolems.ID + ":slime_golem")
-    public static EntityType<SlimeGolemEntity> SLIME_GOLEM;
-
-    @ObjectHolder(SlimeGolems.ID + ":slimeball_entity")
-    public static EntityType<SlimeballEntity> SLIMEBALL_ENTITY;
-
-    //subscribes to the register event for blocks
-    @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        //registers the blocks
-        event.getRegistry().register(new SlimeLayerBlock().setRegistryName(SlimeGolems.createRes("slime_layer")));
-        event.getRegistry().register(new SlimeBlock().setRegistryName(SlimeGolems.createRes("slime_block")));
-        event.getRegistry().register(new CarvedMelonBlock().setRegistryName(SlimeGolems.createRes("carved_melon_block")));
+        public static final RegistryObject<Block> SLIME_LAYER = BLOCK_REGISTRY.register("slime_layer", SlimeLayerBlock::new);
+        public static final RegistryObject<Block> SLIME_BLOCK = BLOCK_REGISTRY.register("slime_block", SlimeBlock::new);
+        public static final RegistryObject<Block> CARVED_MELON = BLOCK_REGISTRY.register("carved_melon_block", CarvedMelonBlock::new);
     }
 
-    //subscribes to the register event for items
-    @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event) {
-        //registers the items
-        //event.getRegistry().register(new BlockItem(SLIME_LAYER, new Item.Properties()).setRegistryName(SlimeGolems.createRes("slime_layer")));
-        event.getRegistry().register(new BlockItem(SLIME_BLOCK, new Item.Properties()).setRegistryName(SlimeGolems.createRes("slime_block")));
-        event.getRegistry().register(new BlockItem(CARVED_MELON_BLOCK, new Item.Properties()).setRegistryName(SlimeGolems.createRes("carved_melon_block")));
+    public static class Items {
+        public static final DeferredRegister<Item> ITEM_REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, SlimeGolems.ID);
 
-        //Register Eggs
-        event.getRegistry().register(new ForgeSpawnEggItem(()->SLIME_GOLEM, 0x2ed941, 0x8fed5c, new Item.Properties().tab(CreativeModeTab.TAB_MISC)).setRegistryName(SlimeGolems.createRes("slime_golem_spawn_egg")));
-        //event.getRegistry().register(new ForgeSpawnEggItem(()->SLIMY_IRON_GOLEM, 0x2ed941, 0x8fed5c, new Item.Properties().tab(CreativeModeTab.TAB_MISC)).setRegistryName(SlimeGolems.createRes("slimy_iron_golem_spawn_egg")));
+        public static final RegistryObject<Item> SLIME_BLOCK = ITEM_REGISTRY.register(Blocks.SLIME_BLOCK.getId().getPath(), () -> new BlockItem(Blocks.SLIME_BLOCK.get(), new Item.Properties()));
+        public static final RegistryObject<Item> CARVED_MELON = ITEM_REGISTRY.register(Blocks.CARVED_MELON.getId().getPath(), () -> new BlockItem(Blocks.CARVED_MELON.get(), new Item.Properties()));
+        public static final RegistryObject<Item> SLIME_GOLEM_SPAWN_EGG = ITEM_REGISTRY.register("slime_golem_spawn_egg", () -> new ForgeSpawnEggItem(Entities.SLIME_GOLEM::get, 0x2ed941, 0x8fed5c, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     }
 
-    //subscribes to the register event for entities
-    @SubscribeEvent
-    public static void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
-        IForgeRegistry<EntityType<?>> reg = event.getRegistry();
+    public static class Entities {
+        public static final DeferredRegister<EntityType<?>> ENTITY_REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITIES, SlimeGolems.ID);
 
-        //Register the Slimegolem (snowman) entity
-        reg.register(EntityType.Builder.of(SlimeGolemEntity::new, MobCategory.MISC).sized(0.7F, 1.8F).build("slime_golem").setRegistryName(SlimeGolems.createRes("slime_golem")));
+        public static final RegistryObject<EntityType<SlimeGolemEntity>> SLIME_GOLEM = ENTITY_REGISTRY.register("slime_golem", () -> EntityType.Builder.of(SlimeGolemEntity::new, MobCategory.MISC).sized(0.7F, 1.8F).build("slime_golem"));
+        public static final RegistryObject<EntityType<SlimeballEntity>> SLIMEBALL_ENTITY = ENTITY_REGISTRY.register("slimeball_entity", () -> EntityType.Builder.<SlimeballEntity>of(SlimeballEntity::new, MobCategory.MISC).sized(0.25f, 0.25f).setUpdateInterval(3).setTrackingRange(16).setShouldReceiveVelocityUpdates(true).build("slimeball_entity"));
+    }
 
-        //Register the Slimeball (snowball) entity
-        reg.register(EntityType.Builder.<SlimeballEntity>of(SlimeballEntity::new, MobCategory.MISC).sized(0.25f, 0.25f).setUpdateInterval(3).setTrackingRange(16).setShouldReceiveVelocityUpdates(true).build("slimeball_entity").setRegistryName(SlimeGolems.createRes("slimeball_entity")));
+    public static void init(IEventBus bus) {
+        Blocks.BLOCK_REGISTRY.register(bus);
+        Items.ITEM_REGISTRY.register(bus);
+        Entities.ENTITY_REGISTRY.register(bus);
     }
 
     //subscribes to the register event for entities
@@ -84,8 +63,8 @@ public class RegistryHandler {
     @SubscribeEvent
     public static void registerModels(EntityRenderersEvent.RegisterRenderers event) {
         //registers the slime golem model
-        event.registerEntityRenderer(SLIME_GOLEM, SlimeGolemRenderer::new);
-        event.registerEntityRenderer(SLIMEBALL_ENTITY, ThrownItemRenderer::new);
+        event.registerEntityRenderer(Entities.SLIME_GOLEM.get(), SlimeGolemRenderer::new);
+        event.registerEntityRenderer(Entities.SLIMEBALL_ENTITY.get(), ThrownItemRenderer::new);
     }
 
     //subscribes to the register event for entities

@@ -10,6 +10,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -117,7 +118,7 @@ public class SlimeGolemEntity extends AbstractGolem implements RangedAttackMob, 
             }
 
             //lay slime everywhere it walks, can change this to only slime chunks if wanted
-            BlockState blockstate = RegistryHandler.SLIME_LAYER.defaultBlockState();
+            BlockState blockstate = RegistryHandler.Blocks.SLIME_LAYER.get().defaultBlockState();
 
             for (int l = 0; l < 4; ++l) {
                 i = Mth.floor(this.getX() + (double) ((float) (l % 2 * 2 - 1) * 0.25F));
@@ -241,13 +242,11 @@ public class SlimeGolemEntity extends AbstractGolem implements RangedAttackMob, 
     }
 
     private boolean isSlimeSpawnable() {
-        if (this.level.getBiome(this.blockPosition()).value().getRegistryName().toString().equals("minecraft:swamp") || this.level.getBiome(this.blockPosition()).value().getRegistryName().toString().equals("minecraft:swamp_hills")) {
+        //Tag for slime spawning biomes like swamps
+        if (this.level.getBiome(this.blockPosition()).is(BiomeTags.ALLOWS_SURFACE_SLIME_SPAWNS)) {
             return true;
         }
 
-        if (isSlimeChunk(this.level, this.getX(), this.getZ())) {
-            return true;
-        }
-        return false;
+        return isSlimeChunk(this.level, this.getX(), this.getZ());
     }
 }

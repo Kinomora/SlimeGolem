@@ -27,6 +27,8 @@ public class SlimeGolems {
     }
 
     public SlimeGolems() {
+        RegistryHandler.init(FMLJavaModLoadingContext.get().getModEventBus());
+
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::addEntityAttributes);
 
@@ -36,12 +38,12 @@ public class SlimeGolems {
     }
 
     private void clientSetup(FMLClientSetupEvent event) {
-        ItemBlockRenderTypes.setRenderLayer(RegistryHandler.SLIME_LAYER, RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(RegistryHandler.SLIME_BLOCK, RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(RegistryHandler.CARVED_MELON_BLOCK, RenderType.solid());
+        ItemBlockRenderTypes.setRenderLayer(RegistryHandler.Blocks.SLIME_LAYER.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(RegistryHandler.Blocks.SLIME_BLOCK.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(RegistryHandler.Blocks.CARVED_MELON.get(), RenderType.solid());
     }
 
     private void addEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(RegistryHandler.SLIME_GOLEM, SlimeGolemEntity.attributes().build());
+        event.put(RegistryHandler.Entities.SLIME_GOLEM.get(), SlimeGolemEntity.attributes().build());
     }
 }

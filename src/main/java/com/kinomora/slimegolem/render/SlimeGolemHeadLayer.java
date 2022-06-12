@@ -30,7 +30,7 @@ public class SlimeGolemHeadLayer extends RenderLayer<SlimeGolemEntity, SlimeGole
             matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
             matrixStackIn.scale(0.625F, -0.625F, -0.625F);
             //Block that is rendered as the head for the Slime Golem --v
-            ItemStack itemstack = new ItemStack(RegistryHandler.CARVED_MELON_BLOCK);
+            ItemStack itemstack = new ItemStack(RegistryHandler.Blocks.CARVED_MELON.get());
             Minecraft.getInstance().getItemRenderer().renderStatic(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.HEAD, false, matrixStackIn, bufferIn, entitylivingbaseIn.level, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), entitylivingbaseIn.getId());
             matrixStackIn.popPose();
         }

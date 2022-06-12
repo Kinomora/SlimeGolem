@@ -30,7 +30,7 @@ public class EventHandler {
                     }
 
                     //summon the entity
-                    SlimeGolemEntity entity = RegistryHandler.SLIME_GOLEM.create((Level)event.getWorld());
+                    SlimeGolemEntity entity = RegistryHandler.Entities.SLIME_GOLEM.get().create((Level)event.getWorld());
                     entity.moveTo(pos.getX()+0.5, pos.getY() - 1.5, pos.getZ()+0.5, 0f, 0f);
                     event.getWorld().addFreshEntity(entity);
                 }
